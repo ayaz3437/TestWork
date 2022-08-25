@@ -29,6 +29,16 @@
   resolved "https://registry.npmjs.org/@agoric/nat/-/nat-4.1.0.tgz"
   integrity sha512-2oMoh3DMn0Fx8HChPPiH8irBNdT/33ttxAZJohhd3nU3gyBRQ1u+eEoOQWfSkrE6M02iMkQM7GE9MzGmjQ6bHg==
 
+"@agoric/notifier@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@agoric/notifier/-/notifier-0.4.0.tgz#1958f7fe105d95c0a338ed5a3ad25e891e6f37b6"
+  integrity sha512-4FtawDGpUhifczOwG4+z+yg3R5HfupLgUS8G+T8a5efe42y/z9CzaOeSn/1vvD9CX1M7Y/RKsZB21MLlee3+Cw==
+  dependencies:
+    "@agoric/assert" "^0.4.0"
+    "@endo/eventual-send" "^0.15.3"
+    "@endo/marshal" "^0.6.7"
+    "@endo/promise-kit" "^0.2.41"
+
 "@agoric/wallet@^0.13.1":
   version "0.13.1"
   resolved "https://registry.npmjs.org/@agoric/wallet/-/wallet-0.13.1.tgz"
@@ -389,7 +399,7 @@
     "@endo/zip" "^0.2.27"
     ses "^0.15.18"
 
-"@endo/eventual-send@^0.15.5":
+"@endo/eventual-send@^0.15.3", "@endo/eventual-send@^0.15.5":
   version "0.15.5"
   resolved "https://registry.npmjs.org/@endo/eventual-send/-/eventual-send-0.15.5.tgz"
   integrity sha512-/xc8g2pbZ/IBRps5TQ4YwyxwUKmX7DY1jsj79mAypVkhXzk5jWQ9eRzGmR+j/uYgS6rRwi0DLdtVUTKRaaH5BA==

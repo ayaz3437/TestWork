@@ -45,7 +45,8 @@
       "warn",
       {
         "endOfLine": "auto",
-        "singleQuote": true
+        "singleQuote": true,
+        "arrowParens": "avoid"
       }
     ]
   },

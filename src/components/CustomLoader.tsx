@@ -4,7 +4,7 @@ const CustomLoader = ({ text }: { text: string }) => {
   return (
     <div className="flex flex-col justify-center items-center">
       <MutatingDots
-        color="#94a3b8"
+        color="#d8b4fe"
         secondaryColor="#fde047"
         height="100"
         width="100"
