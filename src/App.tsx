@@ -23,28 +23,20 @@ const watchPurses = async (
   const n = await E(wallet).getPursesNotifier();
   for await (const purses of iterateNotifier(n)) {
     setPurses(purses);
-    purses.forEach(
-      ({
-        brand,
-        displayInfo,
-        brandPetname: petname,
-      }: {
-        brand: any;
-        displayInfo: any;
-        brandPetname: string;
-      }) => {
-        const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
-        const assetKind = displayInfo && displayInfo.assetKind;
 
-        const newInfo = {
-          petname,
-          assetKind,
-          decimalPlaces,
-        };
+    for (const purse of purses) {
+      const { brand, displayInfo, brandPetname: petname } = purse;
+      const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
+      const assetKind = displayInfo && displayInfo.assetKind;
 
-        mergeBrandToInfo([[brand, newInfo]]);
-      }
-    );
+      const newInfo = {
+        petname,
+        assetKind,
+        decimalPlaces,
+      };
+
+      mergeBrandToInfo([[brand, newInfo]]);
+    }
   }
 };
 
@@ -64,6 +56,7 @@ const App = () => {
   useEffect(() => {
     if (wallet === null) return;
 
+    // TODO: More user-friendly error handling, like a toast.
     watchPurses(wallet, setPurses, mergeBrandToInfo).catch((err: Error) =>
       console.error('got watchPurses err', err)
     );
