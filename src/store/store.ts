@@ -8,7 +8,7 @@ export const walletAtom = atom<ERef<any>>(null);
 export const brandToInfoAtom = atom(
   get => get(brandToInfoInnerAtom),
   (get, set, newEntries: Iterable<any>) => {
-    const old = get(brandToInfoAtom).entries();
+    const old = get(brandToInfoInnerAtom).entries();
     set(brandToInfoInnerAtom, new Map([...old, ...newEntries]));
   }
 );
@@ -16,3 +16,9 @@ export const brandToInfoAtom = atom(
 export const offersAtom = atom(null);
 
 export const pursesAtom = atom(null);
+
+export const instanceIdAtom = atom(null);
+
+export const metricsAtom = atom(null);
+
+export const governedParamsAtom = atom(null);
