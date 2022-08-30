@@ -7,12 +7,13 @@ import {
   Leader,
 } from '@agoric/casting';
 import { dappConfig } from 'config';
-import { identityMarshal } from 'utils/boardIdUnserializer';
-import type { Metrics, GovernedParams, BrandInfo, Brand } from 'store/store';
+import { identityMarshal } from 'utils/identityMarshal';
+import type { Metrics, GovernedParams, BrandInfo } from 'store/store';
+import type { Marshal } from '@endo/marshal';
 
 const watchGovernance = async (
   leader: Leader,
-  unserializer: any,
+  unserializer: Marshal<any>,
   setGovernedParams: (params: GovernedParams) => void
 ) => {
   const f = makeFollower(dappConfig.GOVERNANCE_KEY, leader, { unserializer });
@@ -24,7 +25,7 @@ const watchGovernance = async (
 
 const watchMetrics = async (
   leader: Leader,
-  unserializer: any,
+  unserializer: Marshal<any>,
   setMetrics: (metrics: Metrics) => void
 ) => {
   const f = makeFollower(dappConfig.METRICS_KEY, leader, { unserializer });
