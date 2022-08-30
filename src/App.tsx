@@ -2,56 +2,29 @@ import './installSesLockdown';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { E, ERef } from '@endo/eventual-send';
-import { makeAsyncIterableFromNotifier as iterateNotifier } from '@agoric/notifier';
 
 import {
   brandToInfoAtom,
   walletAtom,
   pursesAtom,
   offersAtom,
+  instanceIdAtom,
+  governedParamsAtom,
+  metricsAtom,
 } from 'store/store';
 import WalletConnection from 'components/WalletConnection';
 import { INTER_LOGO } from 'assets/assets';
 import Swap from 'components/Swap';
-
-const watchPurses = async (
-  wallet: ERef<any>,
-  setPurses: (purses: any) => void,
-  mergeBrandToInfo: (entries: Iterable<Iterable<any>>) => void
-) => {
-  const n = await E(wallet).getPursesNotifier();
-  for await (const purses of iterateNotifier(n)) {
-    setPurses(purses);
-
-    for (const purse of purses) {
-      const { brand, displayInfo, brandPetname: petname } = purse;
-      const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
-      const assetKind = displayInfo && displayInfo.assetKind;
-
-      const newInfo = {
-        petname,
-        assetKind,
-        decimalPlaces,
-      };
-
-      mergeBrandToInfo([[brand, newInfo]]);
-    }
-  }
-};
-
-const watchOffers = async (wallet: any, setOffers: (offers: any) => void) => {
-  const offerNotifier = E(wallet).getOffersNotifier();
-  for await (const offers of iterateNotifier(offerNotifier)) {
-    setOffers(offers);
-  }
-};
+import { watchContract, watchPurses, watchOffers } from 'utils/updates';
 
 const App = () => {
   const [wallet] = useAtom(walletAtom);
   const [_brandToInfo, mergeBrandToInfo] = useAtom(brandToInfoAtom);
   const [_purses, setPurses] = useAtom(pursesAtom);
   const [_offers, setOffers] = useAtom(offersAtom);
+  const [_metrics, setMetrics] = useAtom(metricsAtom);
+  const [_governedParams, setGovernedParams] = useAtom(governedParamsAtom);
+  const [_instanceId, setInstanceId] = useAtom(instanceIdAtom);
 
   useEffect(() => {
     if (wallet === null) return;
@@ -63,7 +36,17 @@ const App = () => {
     watchOffers(wallet, setOffers).catch((err: Error) =>
       console.error('got watchOffers err', err)
     );
-  }, [wallet, mergeBrandToInfo, setPurses, setOffers]);
+
+    watchContract(wallet, { setMetrics, setGovernedParams, setInstanceId });
+  }, [
+    wallet,
+    mergeBrandToInfo,
+    setPurses,
+    setOffers,
+    setMetrics,
+    setGovernedParams,
+    setInstanceId,
+  ]);
 
   return (
     <motion.div>
