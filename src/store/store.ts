@@ -1,7 +1,15 @@
 import { atom } from 'jotai';
 import type { ERef } from '@endo/eventual-send';
 
-const brandToInfoInnerAtom = atom(new Map());
+export type Brand = any;
+
+export type BrandInfo = {
+  petname: string;
+  assetKind: string;
+  decimalPlaces: number;
+};
+
+const brandToInfoInnerAtom = atom(new Map<Brand, BrandInfo>());
 
 export const walletAtom = atom<ERef<any>>(null);
 
@@ -17,8 +25,12 @@ export const offersAtom = atom(null);
 
 export const pursesAtom = atom(null);
 
-export const instanceIdAtom = atom(null);
+export const instanceIdAtom = atom<string | undefined>(undefined);
 
-export const metricsAtom = atom(null);
+// TODO: Fill in properties on types as needed (or until we can import them
+// from the package).
+export type Metrics = Record<string, unknown>;
+export const metricsAtom = atom<Metrics | null>(null);
 
-export const governedParamsAtom = atom(null);
+export type GovernedParams = Record<string, unknown>;
+export const governedParamsAtom = atom<GovernedParams | null>(null);

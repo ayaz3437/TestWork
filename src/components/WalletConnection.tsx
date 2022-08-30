@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { E } from '@endo/eventual-send';
 import { Popover } from '@headlessui/react';
 import { BiChevronDown } from 'react-icons/bi';
-import { dappConfig } from 'util/config';
+import { dappConfig } from 'config';
 import { useAtom } from 'jotai';
 import { walletAtom } from 'store/store';
 
