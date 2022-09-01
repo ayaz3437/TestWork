@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import type { ERef } from '@endo/eventual-send';
+import { makeDisplayFunctions } from 'utils/displayFunctions';
 
 export type Brand = any;
 
@@ -9,7 +10,9 @@ export type BrandInfo = {
   decimalPlaces: number;
 };
 
-const brandToInfoInnerAtom = atom(new Map<Brand, BrandInfo>());
+export type BrandToInfo = Map<Brand, BrandInfo>;
+
+const brandToInfoInnerAtom = atom<BrandToInfo>(new Map<Brand, BrandInfo>());
 
 export const walletAtom = atom<ERef<any>>(null);
 
@@ -21,9 +24,9 @@ export const brandToInfoAtom = atom(
   }
 );
 
-export const offersAtom = atom(null);
+export const offersAtom = atom<Array<any> | null>(null);
 
-export const pursesAtom = atom(null);
+export const pursesAtom = atom<Array<any> | null>(null);
 
 export const instanceIdAtom = atom<string | undefined>(undefined);
 
@@ -34,3 +37,8 @@ export const metricsAtom = atom<Metrics | null>(null);
 
 export type GovernedParams = Record<string, unknown>;
 export const governedParamsAtom = atom<GovernedParams | null>(null);
+
+export const displayFunctionsAtom = atom(get => {
+  const brandToInfo = get(brandToInfoAtom);
+  return makeDisplayFunctions(brandToInfo);
+});

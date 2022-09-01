@@ -14,3 +14,15 @@ declare module '@agoric/casting' {
   export const iterateLatest;
   export const makeLeader;
 }
+
+declare module '@agoric/ertp' {
+  export const AmountMath;
+  export const AssetKind;
+}
+
+declare module '@agoric/ui-components' {
+  export const parseAsValue;
+  export const stringifyValue;
+  export const stringifyRatioAsPercent;
+  export const stringifyRatio;
+}

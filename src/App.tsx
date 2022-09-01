@@ -11,7 +11,7 @@ import {
   instanceIdAtom,
   governedParamsAtom,
   metricsAtom,
-} from 'store/store';
+} from 'store/app';
 import WalletConnection from 'components/WalletConnection';
 import { INTER_LOGO } from 'assets/assets';
 import Swap from 'components/Swap';

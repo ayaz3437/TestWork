@@ -8,7 +8,7 @@ import {
 } from '@agoric/casting';
 import { dappConfig } from 'config';
 import { identityMarshal } from 'utils/identityMarshal';
-import type { Metrics, GovernedParams, BrandInfo } from 'store/store';
+import type { Metrics, GovernedParams, BrandInfo } from 'store/app';
 import type { Marshal } from '@endo/marshal';
 
 const watchGovernance = async (
