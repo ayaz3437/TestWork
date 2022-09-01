@@ -17,6 +17,8 @@ import { INTER_LOGO } from 'assets/assets';
 import Swap from 'components/Swap';
 import { watchContract, watchPurses, watchOffers } from 'utils/updates';
 
+import 'styles/globals.css';
+
 const App = () => {
   const [wallet] = useAtom(walletAtom);
   const [_brandToInfo, mergeBrandToInfo] = useAtom(brandToInfoAtom);

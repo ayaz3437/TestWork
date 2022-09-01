@@ -1,0 +1,10 @@
+@tailwind base;
+
+@layer base {
+  button {
+    @apply capitalize rounded-sm;
+  }
+  * {
+    border-color: #e5e7eb;
+  }
+}
