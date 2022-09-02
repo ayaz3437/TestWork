@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiChevronDown } from 'react-icons/fi';
+import type { PursesJSONState } from '@agoric/wallet-backend';
+import { useAtomValue } from 'jotai';
 
 import CustomInput from 'components/CustomInput';
 import DialogSwap from 'components/DialogSwap';
-import { useAtomValue } from 'jotai';
 import { brandToInfoAtom, displayFunctionsAtom } from 'store/app';
 import { displayPetname } from 'utils/displayFunctions';
 
@@ -35,8 +36,8 @@ const SectionSwap = ({
 
   // TODO: Filter brands.
   const brands = [...brandToInfo.keys()];
-  const brand = undefined;
-  const purse: any | undefined = undefined;
+  const brand = null;
+  const purse: PursesJSONState | null = null;
 
   return (
     <>
@@ -73,7 +74,8 @@ const SectionSwap = ({
                 <FiChevronDown className="text-xl" />
               </div>
               <h3 className="text-xs text-gray-500 font-semibold">
-                Purse: <span>{displayPetname(purse.pursePetname)}</span>{' '}
+                Purse:{' '}
+                <span>{displayPetname(/*purse?.pursePetname ??*/ '')}</span>{' '}
               </h3>
             </div>
           ) : (

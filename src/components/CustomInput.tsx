@@ -15,8 +15,8 @@ function CustomInput({
 }: {
   onChange: (value: bigint) => void;
   value?: bigint;
-  brand?: Brand;
-  purse?: PursesJSONState;
+  brand?: Brand | null;
+  purse?: PursesJSONState | null;
   showMaxButton?: boolean;
   disabled?: boolean;
 }) {

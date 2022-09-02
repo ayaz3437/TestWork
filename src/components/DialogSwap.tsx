@@ -19,16 +19,16 @@ const DialogSwap = ({
   open: boolean;
   handleClose: () => void;
   brands: Array<Brand>;
-  selectedBrand: Brand;
-  handleBrandSelected: (brand: Brand) => void;
+  handleBrandSelected: (brand: Brand | null) => void;
   handlePurseSelected: (purse: any) => void;
+  selectedBrand?: Brand | null;
   purseOnly?: boolean;
 }) => {
   return (
     <AnimatePresence>
       {open && (
         <motion.div
-          key={selectedBrand || purseOnly ? 'purseDialog' : 'assetDialog'}
+          key={selectedBrand ? 'purseDialog' : 'assetDialog'}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -49,7 +49,7 @@ const DialogSwap = ({
                 onClick={handleClose}
               />
             </div>
-            {selectedBrand || purseOnly ? (
+            {selectedBrand ? (
               <PurseDialog
                 purseOnly={purseOnly}
                 brand={selectedBrand}

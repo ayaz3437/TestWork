@@ -23,13 +23,14 @@ export const makeDisplayFunctions = (brandToInfo: BrandToInfo) => {
   const getDecimalPlaces = (brand: Brand) =>
     brandToInfo.get(brand)?.decimalPlaces;
 
-  const getPetname = (brand: Brand) => brandToInfo.get(brand)?.petname ?? '';
+  const getPetname = (brand?: Brand | null) =>
+    (brand && brandToInfo.get(brand)?.petname) ?? '';
 
   const displayPercent = (ratio: any, placesToShow: number) => {
     return stringifyRatioAsPercent(ratio, getDecimalPlaces, placesToShow);
   };
 
-  const displayBrandPetname = (brand: Brand) => {
+  const displayBrandPetname = (brand?: Brand | null) => {
     return displayPetname(getPetname(brand));
   };
 
@@ -47,7 +48,7 @@ export const makeDisplayFunctions = (brandToInfo: BrandToInfo) => {
     );
   };
 
-  const displayBrandIcon = (brand: Brand) =>
+  const displayBrandIcon = (brand?: Brand | null) =>
     getLogoForBrandPetname(getPetname(brand));
 
   return {
