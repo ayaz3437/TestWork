@@ -8,8 +8,9 @@ import {
 } from '@agoric/casting';
 import { dappConfig } from 'config';
 import { identityMarshal } from 'utils/identityMarshal';
-import type { Metrics, GovernedParams, BrandInfo } from 'store/store';
+import type { Metrics, GovernedParams, BrandInfo } from 'store/app';
 import type { Marshal } from '@endo/marshal';
+import { PursesJSONState } from '@agoric/wallet-backend';
 
 const watchGovernance = async (
   leader: Leader,
@@ -80,14 +81,14 @@ export const watchContract = async (wallet: any, setters: ContractSetters) => {
 
 export const watchPurses = async (
   wallet: ERef<any>,
-  setPurses: (purses: any) => void,
+  setPurses: (purses: PursesJSONState[]) => void,
   mergeBrandToInfo: (entries: Iterable<Iterable<any>>) => void
 ) => {
   const n = await E(wallet).getPursesNotifier();
   for await (const purses of iterateNotifier(n)) {
     setPurses(purses);
 
-    for (const purse of purses) {
+    for (const purse of purses as PursesJSONState[]) {
       const { brand, displayInfo, brandPetname: petname } = purse;
       const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
       const assetKind = displayInfo && displayInfo.assetKind;

@@ -5,7 +5,7 @@ import { Popover } from '@headlessui/react';
 import { BiChevronDown } from 'react-icons/bi';
 import { dappConfig } from 'config';
 import { useAtom } from 'jotai';
-import { walletAtom } from 'store/store';
+import { walletAtom } from 'store/app';
 
 // Create a wrapper for agoric-wallet-connection that is specific to
 // the app's instance of React.

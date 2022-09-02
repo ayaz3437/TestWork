@@ -11,11 +11,13 @@ import {
   instanceIdAtom,
   governedParamsAtom,
   metricsAtom,
-} from 'store/store';
+} from 'store/app';
 import WalletConnection from 'components/WalletConnection';
 import { INTER_LOGO } from 'assets/assets';
 import Swap from 'components/Swap';
 import { watchContract, watchPurses, watchOffers } from 'utils/updates';
+
+import 'styles/globals.css';
 
 const App = () => {
   const [wallet] = useAtom(walletAtom);

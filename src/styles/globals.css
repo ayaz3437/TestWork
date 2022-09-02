@@ -1,0 +1,14 @@
+@import 'base.css';
+@import 'utilities.css';
+@import 'components.css';
+
+:root {
+  --color-glow: #fed7aa;
+  --color-secondary: #d7325233;
+  --color-alternative: #f4f4f5;
+  --color-alternative-dark: #e4e4e7;
+  --color-alternative-bright: #fafafa;
+  --color-primary: #c084fc;
+  --color-primary-dark: #a855f7;
+  --currentColor: #d1d5db;
+}

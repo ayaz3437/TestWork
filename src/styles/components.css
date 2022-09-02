@@ -1,0 +1,10 @@
+@tailwind components;
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white disabled:bg-gray-400 disabled:text-white hover:bg-primaryDark;
+  }
+  .input-primary {
+    @apply bg-white text-xl rounded-sm p-3 focus:outline-none focus:ring-2 focus:ring-secondary;
+  }
+}
