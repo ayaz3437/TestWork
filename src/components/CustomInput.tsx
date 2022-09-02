@@ -1,9 +1,9 @@
-import { AmountMath, AssetKind } from '@agoric/ertp';
+import { AmountMath, AssetKind, Brand } from '@agoric/ertp';
 import { useState } from 'react';
 import { parseAsValue, stringifyValue } from '@agoric/ui-components';
 import { useAtomValue } from 'jotai';
 import { displayFunctionsAtom } from 'store/app';
-import type { Brand } from 'store/app';
+import { PursesJSONState } from '@agoric/wallet-backend';
 
 function CustomInput({
   value,
@@ -16,7 +16,7 @@ function CustomInput({
   onChange: (value: bigint) => void;
   value?: bigint;
   brand?: Brand;
-  purse?: any;
+  purse?: PursesJSONState;
   showMaxButton?: boolean;
   disabled?: boolean;
 }) {

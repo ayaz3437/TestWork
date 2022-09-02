@@ -1,13 +1,11 @@
 import { atom } from 'jotai';
 import type { ERef } from '@endo/eventual-send';
 import { makeDisplayFunctions } from 'utils/displayFunctions';
+import { Brand, DisplayInfo } from '@agoric/ertp';
+import { PursesJSONState } from '@agoric/wallet-backend';
 
-export type Brand = any;
-
-export type BrandInfo = {
+export type BrandInfo = DisplayInfo<'nat'> & {
   petname: string;
-  assetKind: string;
-  decimalPlaces: number;
 };
 
 export type BrandToInfo = Map<Brand, BrandInfo>;
@@ -26,7 +24,7 @@ export const brandToInfoAtom = atom(
 
 export const offersAtom = atom<Array<any> | null>(null);
 
-export const pursesAtom = atom<Array<any> | null>(null);
+export const pursesAtom = atom<Array<PursesJSONState> | null>(null);
 
 export const instanceIdAtom = atom<string | undefined>(undefined);
 

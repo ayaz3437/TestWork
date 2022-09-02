@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import clsx from 'clsx';
-import { FiChevronLeft } from 'react-icons/fi';
 import { useAtomValue } from 'jotai';
+import { FiChevronLeft } from 'react-icons/fi';
 
+import { Brand } from '@agoric/ertp';
 import ListItem from 'components/ListItem';
 import PurseListItem from 'components/PurseListItem';
 import SkeletonPurseDialog from 'components/SkeletonPurseDialog';
-import { Brand, displayFunctionsAtom, pursesAtom } from 'store/app';
+import { displayFunctionsAtom, pursesAtom } from 'store/app';
 import { filterPursesByBrand } from 'utils/helpers';
 
 const PurseDialog = ({
@@ -22,6 +23,7 @@ const PurseDialog = ({
   handlePurseSelected: (purse: any) => void;
 }) => {
   const purses = useAtomValue(pursesAtom);
+  assert(purses, 'no purses in atom');
   const { displayBrandPetname, displayBrandIcon } =
     useAtomValue(displayFunctionsAtom);
 

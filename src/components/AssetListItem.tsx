@@ -2,9 +2,9 @@ import { useId } from 'react';
 import { useAtomValue } from 'jotai';
 
 import { displayFunctionsAtom } from 'store/app';
-import type { Brand } from 'store/app';
+import { Brand } from '@agoric/ertp';
 
-const AssetListItem = ({ brand }: Brand) => {
+const AssetListItem = ({ brand }: { brand: Brand }) => {
   const { displayBrandIcon, displayBrandPetname } =
     useAtomValue(displayFunctionsAtom);
 

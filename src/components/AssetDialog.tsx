@@ -1,7 +1,7 @@
+import { Brand } from '@agoric/ertp';
 import AssetListItem from 'components/AssetListItem';
 import ListItem from 'components/ListItem';
 import SkeletonListItem from 'components/SkeletonListItem';
-import type { Brand } from 'store/app';
 
 const AssetDialog = ({
   brands,

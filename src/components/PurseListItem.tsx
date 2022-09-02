@@ -1,8 +1,9 @@
 import { AmountMath } from '@agoric/ertp';
+import { PursesJSONState } from '@agoric/wallet-backend';
 import { useAtomValue } from 'jotai';
 import { displayFunctionsAtom } from 'store/app';
 
-const PurseListItem = ({ purse }: { purse: any }) => {
+const PurseListItem = ({ purse }: { purse: PursesJSONState }) => {
   const { displayAmount } = useAtomValue(displayFunctionsAtom);
   const balance = displayAmount(AmountMath.make(purse.brand, purse.value), 4);
 
