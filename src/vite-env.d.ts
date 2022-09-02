@@ -15,6 +15,7 @@ declare module '@agoric/casting' {
   export const makeLeader;
 }
 
+// This holds constants; types are in ertp.d.ts
 declare module '@agoric/ertp' {
   export const AmountMath;
   export const AssetKind = {
@@ -22,14 +23,6 @@ declare module '@agoric/ertp' {
     SET: 'set',
     COPY_SET: 'copySet',
     COPY_BAG: 'copyBag',
-  };
-  export type AssetKind = 'nat' | 'set' | 'copySet' | 'copyBag';
-  export type DisplayInfo<K> = {
-    decimalPlaces?: number;
-    assetKind: K;
-  };
-  export type Brand = {
-    getDisplayInfo: () => DisplayInfo;
   };
 }
 
