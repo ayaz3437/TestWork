@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiX } from 'react-icons/fi';
 
-import type { Brand } from 'store/app';
+import { Brand } from '@agoric/ertp';
 import AssetDialog from 'components/AssetDialog';
 import PurseDialog from 'components/PurseDialog';
 
