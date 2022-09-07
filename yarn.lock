@@ -201,7 +201,7 @@
     glob "^7.1.6"
     rollup-plugin-string "^3.0.0"
 
-"@agoric/zoe@^0.24.0":
+"@agoric/zoe@0.24.0", "@agoric/zoe@^0.24.0":
   version "0.24.0"
   resolved "https://registry.yarnpkg.com/@agoric/zoe/-/zoe-0.24.0.tgz#383695c6a70dc6ef77b12bbd858567ed2f6bce6a"
   integrity sha512-kT7cDDn2Tvfd1P0Pk+FIcrg2BdzLF9VnQ0hfxHIAQrCN68tHIAPrt9wW3R8T8H1HA6t9bC0CqQGQEo8BrDKblw==
@@ -3649,6 +3649,13 @@ react-refresh@^0.14.0:
   version "0.14.0"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.14.0.tgz"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
+
+react-toastify@^9.0.8:
+  version "9.0.8"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-9.0.8.tgz#3876c89fc6211a29027b3075010b5ec39ebe4f7e"
+  integrity sha512-EwM+teWt49HSHx+67qI08yLAW1zAsBxCXLCsUfxHYv1W7/R3ZLhrqKalh7j+kjgPna1h5LQMSMwns4tB4ww2yQ==
+  dependencies:
+    clsx "^1.1.1"
 
 react@^18.2.0:
   version "18.2.0"

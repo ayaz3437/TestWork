@@ -5,7 +5,6 @@ import { FiX } from 'react-icons/fi';
 
 import { Brand } from '@agoric/ertp';
 import AssetDialog from 'components/AssetDialog';
-import PurseDialog from 'components/PurseDialog';
 
 const DialogSwap = ({
   open,
@@ -13,14 +12,11 @@ const DialogSwap = ({
   brands,
   selectedBrand,
   handleBrandSelected,
-  handlePurseSelected,
-  purseOnly = false,
 }: {
   open: boolean;
   handleClose: () => void;
   brands: Array<Brand>;
   handleBrandSelected: (brand: Brand | null) => void;
-  handlePurseSelected: (purse: any) => void;
   selectedBrand?: Brand | null;
   purseOnly?: boolean;
 }) => {
@@ -49,19 +45,10 @@ const DialogSwap = ({
                 onClick={handleClose}
               />
             </div>
-            {selectedBrand ? (
-              <PurseDialog
-                purseOnly={purseOnly}
-                brand={selectedBrand}
-                resetBrand={() => handleBrandSelected(null)}
-                handlePurseSelected={handlePurseSelected}
-              />
-            ) : (
-              <AssetDialog
-                handleBrandSelected={handleBrandSelected}
-                brands={brands}
-              />
-            )}
+            <AssetDialog
+              handleBrandSelected={handleBrandSelected}
+              brands={brands}
+            />
           </motion.div>
         </motion.div>
       )}

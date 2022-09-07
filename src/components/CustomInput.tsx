@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai';
 import { displayFunctionsAtom } from 'store/app';
 import { PursesJSONState } from '@agoric/wallet-backend';
 
-function CustomInput({
+const CustomInput = ({
   value,
   onChange,
   brand,
@@ -19,7 +19,7 @@ function CustomInput({
   purse?: PursesJSONState | null;
   showMaxButton?: boolean;
   disabled?: boolean;
-}) {
+}) => {
   const { displayAmount, getDecimalPlaces } =
     useAtomValue(displayFunctionsAtom);
 
@@ -80,6 +80,6 @@ function CustomInput({
       )}
     </div>
   );
-}
+};
 
 export default CustomInput;

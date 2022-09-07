@@ -1,8 +1,10 @@
 import { atom } from 'jotai';
 import type { ERef } from '@endo/eventual-send';
+import type { Amount, Brand, DisplayInfo } from '@agoric/ertp';
+import type { PursesJSONState } from '@agoric/wallet-backend';
+import type { Ratio } from '@agoric/zoe/src/contractSupport';
+
 import { makeDisplayFunctions } from 'utils/displayFunctions';
-import { Brand, DisplayInfo } from '@agoric/ertp';
-import { PursesJSONState } from '@agoric/wallet-backend';
 
 export type BrandInfo = DisplayInfo<'nat'> & {
   petname: string;
@@ -28,15 +30,31 @@ export const pursesAtom = atom<Array<PursesJSONState> | null>(null);
 
 export const instanceIdAtom = atom<string | undefined>(undefined);
 
-// TODO: Fill in properties on types as needed (or until we can import them
-// from the package).
-export type Metrics = Record<string, unknown>;
+export type Metrics = {
+  anchorPoolBalance: Amount;
+  feePoolBalance: Amount;
+  totalAnchorProvided: Amount;
+  totalStableProvided: Amount;
+};
+
+// TODO: Support multiple anchors.
 export const metricsAtom = atom<Metrics | null>(null);
 
-export type GovernedParams = Record<string, unknown>;
+// TODO: Support multiple anchors.
+export type GovernedParams = {
+  GiveStableFee: Ratio;
+  MintLimit: Amount;
+  WantStableFee: Ratio;
+};
 export const governedParamsAtom = atom<GovernedParams | null>(null);
 
 export const displayFunctionsAtom = atom(get => {
   const brandToInfo = get(brandToInfoAtom);
   return makeDisplayFunctions(brandToInfo);
 });
+
+export const stableBrandAtom = atom(
+  get => get(metricsAtom)?.feePoolBalance?.brand
+);
+
+export const previewEnabledAtom = atom(_get => false);

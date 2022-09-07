@@ -20,7 +20,12 @@ const watchGovernance = async (
   const f = makeFollower(dappConfig.GOVERNANCE_KEY, leader, { unserializer });
 
   for await (const { value } of iterateLatest(f)) {
-    setGovernedParams(value);
+    const current = value.current;
+    const GiveStableFee = current.GiveStableFee.value;
+    const MintLimit = current.MintLimit.value;
+    const WantStableFee = current.WantStableFee.value;
+
+    setGovernedParams({ GiveStableFee, MintLimit, WantStableFee });
   }
 };
 
