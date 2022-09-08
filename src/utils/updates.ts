@@ -21,9 +21,9 @@ const watchGovernance = async (
 
   for await (const { value } of iterateLatest(f)) {
     const current = value.current;
-    const GiveStableFee = current.GiveStableFee.value;
+    const GiveStableFee = current.GiveMintedFee.value;
     const MintLimit = current.MintLimit.value;
-    const WantStableFee = current.WantStableFee.value;
+    const WantStableFee = current.WantMintedFee.value;
 
     setGovernedParams({ GiveStableFee, MintLimit, WantStableFee });
   }
@@ -80,7 +80,7 @@ export const watchContract = async (wallet: any, setters: ContractSetters) => {
   );
 
   loadInstanceId(leader, setInstanceId).catch((err: Error) =>
-    console.error('got loadInstnaceId err', err)
+    console.error('got loadInstanceId err', err)
   );
 };
 

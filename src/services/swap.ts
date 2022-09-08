@@ -37,8 +37,8 @@ const makeSwapOffer = ({
 
   const method =
     swapDirection === SwapDirection.TO_STABLE
-      ? 'makeWantStableInvitation'
-      : 'makeGiveStableInvitation';
+      ? 'makeWantMintedInvitation'
+      : 'makeGiveMintedInvitation';
 
   const offerConfig = {
     invitationMaker: {
