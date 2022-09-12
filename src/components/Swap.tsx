@@ -12,12 +12,13 @@ import ContractInfo from 'components/ContractInfo';
 import CustomLoader from 'components/CustomLoader';
 import {
   brandToInfoAtom,
-  governedParamsAtom,
-  instanceIdAtom,
-  metricsAtom,
   offersAtom,
   walletAtom,
+  governedParamsIndexAtom,
+  metricsIndexAtom,
+  instanceIdsAtom,
 } from 'store/app';
+import { instanceIdAtom } from 'store/swap';
 import {
   fromAmountAtom,
   SwapDirection,
@@ -40,8 +41,8 @@ import { doSwap } from 'services/swap';
 
 const Swap = () => {
   const brandToInfo = useAtomValue(brandToInfoAtom);
-  const metrics = useAtomValue(metricsAtom);
-  const governedParams = useAtomValue(governedParamsAtom);
+  const metricsIndex = useAtomValue(metricsIndexAtom);
+  const governedParamsIndex = useAtomValue(governedParamsIndexAtom);
   const fromAmount = useAtomValue(fromAmountAtom);
   const toAmount = useAtomValue(toAmountAtom);
   const [swapDirection, setSwapDirection] = useAtom(swapDirectionAtom);
@@ -57,9 +58,19 @@ const Swap = () => {
   const toPurse = useAtomValue(toPurseAtom);
   const offers = useAtomValue(offersAtom);
   const [swapButtonStatus, setSwapButtonStatus] = useAtom(swapButtonStatusAtom);
+  const instanceIds = useAtomValue(instanceIdsAtom);
 
-  const assetsLoaded =
-    brandToInfo.size && metrics && governedParams && instanceId;
+  const anchorPetnames = [...instanceIds.keys()];
+  const areAnchorsLoaded =
+    anchorPetnames.length &&
+    anchorPetnames
+      .every(petname => {
+        const metrics = metricsIndex.get(petname);
+        const brand = metrics?.anchorPoolBalance.brand;
+        const brandInfo = brand && brandToInfo.get(brand);
+        const governedParams = governedParamsIndex.get(petname);
+        return metrics && brandInfo && governedParams;
+      })
 
   const switchToAndFrom = useCallback(() => {
     if (swapDirection === SwapDirection.TO_ANCHOR) {
@@ -70,7 +81,7 @@ const Swap = () => {
   }, [swapDirection, setSwapDirection]);
 
   const handleSwap = useCallback(() => {
-    if (!assetsLoaded) return;
+    if (!areAnchorsLoaded) return;
 
     const fromValue = fromAmount?.value;
     const toValue = toAmount?.value;
@@ -94,7 +105,7 @@ const Swap = () => {
     setSwapped,
     setToastId,
     addError,
-    assetsLoaded,
+    areAnchorsLoaded,
     fromAmount?.value,
     fromPurse,
     instanceId,
@@ -198,8 +209,8 @@ const Swap = () => {
       <motion.div className="flex justify-between items-center gap-8 " layout>
         <h1 className="text-2xl font-semibold text-slate-800">Stable Swap</h1>
       </motion.div>
-      {!assetsLoaded ? (
-        <CustomLoader text="Waiting for wallet..." />
+      {!areAnchorsLoaded ? (
+        <CustomLoader text="Please connect wallet" />
       ) : (
         <motion.div
           className="flex flex-col gap-4 relative"
@@ -223,7 +234,7 @@ const Swap = () => {
       <motion.button
         className={clsx(
           'flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-xl font-medium p-3  uppercase',
-          assetsLoaded
+          areAnchorsLoaded
             ? 'bg-primary hover:bg-primaryDark text-white'
             : 'text-gray-500'
         )}

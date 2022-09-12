@@ -24,7 +24,7 @@ const CustomInput = ({
     useAtomValue(displayFunctionsAtom);
 
   const decimalPlaces = (brand && getDecimalPlaces(brand)) || 0;
-  const onMax = () => purse && onChange(purse.value);
+  const onMax = () => purse && onChange(purse.currentAmount.value);
 
   const amountString = stringifyValue(value, AssetKind.NAT, decimalPlaces, 4);
   const [fieldString, setFieldString] = useState(
@@ -32,7 +32,7 @@ const CustomInput = ({
   );
 
   const currentAmount = purse
-    ? displayAmount(AmountMath.make(purse.brand, purse.value), 4)
+    ? displayAmount(AmountMath.make(purse.brand, purse.currentAmount.value), 4)
     : '0.0';
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = ev => {

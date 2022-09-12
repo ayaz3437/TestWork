@@ -5,30 +5,22 @@ import type { PursesJSONState } from '@agoric/wallet-backend';
 import type { Ratio } from '@agoric/zoe/src/contractSupport';
 
 import { makeDisplayFunctions } from 'utils/displayFunctions';
+import { mapAtom } from 'utils/helpers';
 
 export type BrandInfo = DisplayInfo<'nat'> & {
   petname: string;
 };
 
-export type BrandToInfo = Map<Brand, BrandInfo>;
-
-const brandToInfoInnerAtom = atom<BrandToInfo>(new Map<Brand, BrandInfo>());
+export const brandToInfoAtom = mapAtom<Brand, BrandInfo>();
 
 export const walletAtom = atom<ERef<any>>(null);
-
-export const brandToInfoAtom = atom(
-  get => get(brandToInfoInnerAtom),
-  (get, set, newEntries: Iterable<any>) => {
-    const old = get(brandToInfoInnerAtom).entries();
-    set(brandToInfoInnerAtom, new Map([...old, ...newEntries]));
-  }
-);
 
 export const offersAtom = atom<Array<any> | null>(null);
 
 export const pursesAtom = atom<Array<PursesJSONState> | null>(null);
 
-export const instanceIdAtom = atom<string | undefined>(undefined);
+/** A map of anchor brand petnames to their instance ids. */
+export const instanceIdsAtom = mapAtom<string, string>();
 
 export type Metrics = {
   anchorPoolBalance: Amount;
@@ -37,24 +29,22 @@ export type Metrics = {
   totalStableProvided: Amount;
 };
 
-// TODO: Support multiple anchors.
-export const metricsAtom = atom<Metrics | null>(null);
+/** A map of anchor brand petnames to their instances' metrics. */
+export const metricsIndexAtom = mapAtom<string, Metrics>();
 
-// TODO: Support multiple anchors.
 export type GovernedParams = {
   GiveStableFee: Ratio;
   MintLimit: Amount;
   WantStableFee: Ratio;
 };
-export const governedParamsAtom = atom<GovernedParams | null>(null);
+
+/** A map of anchor brand petnames to their instancess' governed params. */
+export const governedParamsIndexAtom = mapAtom<string, GovernedParams>();
 
 export const displayFunctionsAtom = atom(get => {
   const brandToInfo = get(brandToInfoAtom);
   return makeDisplayFunctions(brandToInfo);
 });
 
-export const stableBrandAtom = atom(
-  get => get(metricsAtom)?.feePoolBalance?.brand
-);
-
+/**  Experimental feature flag. */
 export const previewEnabledAtom = atom(_get => false);

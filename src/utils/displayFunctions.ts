@@ -5,7 +5,7 @@ import {
 } from '@agoric/ui-components';
 import { AssetKind, Brand } from '@agoric/ertp';
 import { IST_ICON } from 'assets/assets';
-import type { BrandToInfo } from 'store/app';
+import type { BrandInfo } from 'store/app';
 
 const getLogoForBrandPetname = (brandPetname: string) => {
   switch (brandPetname) {
@@ -19,7 +19,7 @@ const getLogoForBrandPetname = (brandPetname: string) => {
 export const displayPetname = (pn: Array<string> | string) =>
   Array.isArray(pn) ? pn.join('.') : pn;
 
-export const makeDisplayFunctions = (brandToInfo: BrandToInfo) => {
+export const makeDisplayFunctions = (brandToInfo: Map<Brand, BrandInfo>) => {
   const getDecimalPlaces = (brand: Brand) =>
     brandToInfo.get(brand)?.decimalPlaces;
 

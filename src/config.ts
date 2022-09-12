@@ -1,6 +1,5 @@
 export const dappConfig = {
   CONTRACT_NAME: 'PSM',
-  METRICS_KEY: ':published.psm.IST.AUSD.metrics',
-  GOVERNANCE_KEY: ':published.psm.IST.AUSD.governance',
+  INSTANCE_PREFIX: ':published.psm.IST.',
   INSTANCES_KEY: ':published.agoricNames.instance',
 };

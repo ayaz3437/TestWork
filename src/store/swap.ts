@@ -10,17 +10,18 @@ import type { Id as ToastId, ToastOptions } from 'react-toastify';
 
 import {
   displayFunctionsAtom,
-  governedParamsAtom,
-  metricsAtom,
-  stableBrandAtom,
+  governedParamsIndexAtom,
+  metricsIndexAtom,
   pursesAtom,
+  instanceIdsAtom,
 } from 'store/app';
 import { filterPursesByBrand } from 'utils/helpers';
+import type { Metrics, GovernedParams } from 'store/app';
 
 export enum SwapError {
   IN_PROGRESS = 'Swap in progress.',
   EMPTY_AMOUNTS = 'Please enter the amounts first.',
-  NO_BRANDS = 'Please select the assets first.',
+  NO_BRANDS = 'Please select an asset first.',
 }
 
 export enum ButtonStatus {
@@ -45,10 +46,58 @@ export enum SwapDirection {
   TO_ANCHOR,
 }
 
-// TODO: Support multiple anchors.
+export const selectedAnchorPetnameAtom = atom<string | null>(null);
+
 export const anchorBrandAtom = atom(
   get => get(metricsAtom)?.anchorPoolBalance?.brand
 );
+
+export const anchorBrandsAtom = atom(get => {
+  const metrics = [...get(metricsIndexAtom).entries()];
+  return metrics.map(
+    ([_petname, { anchorPoolBalance }]) => anchorPoolBalance.brand
+  );
+});
+
+/** The metrics for the currently selected anchor. */
+export const metricsAtom = atom<Metrics | null>(get => {
+  const selectedPetname = get(selectedAnchorPetnameAtom);
+  if (!selectedPetname) {
+    return null;
+  }
+  return get(metricsIndexAtom).get(selectedPetname) ?? null;
+});
+
+/** The governed params for the currently selected anchor. */
+export const governedParamsAtom = atom<GovernedParams | null>(get => {
+  const selectedPetname = get(selectedAnchorPetnameAtom);
+  if (!selectedPetname) {
+    return null;
+  }
+  return get(governedParamsIndexAtom).get(selectedPetname) ?? null;
+});
+
+/** The contract instance id for the currently selected anchor. */
+export const instanceIdAtom = atom<string | null>(get => {
+  const selectedPetname = get(selectedAnchorPetnameAtom);
+  if (!selectedPetname) {
+    return null;
+  }
+  return get(instanceIdsAtom).get(selectedPetname) ?? null;
+});
+
+export const stableBrandAtom = atom(get => {
+  const metrics = get(metricsIndexAtom);
+  const entries = metrics && [...metrics.entries()];
+
+  // Use the first entry, the fee token is always the same.
+  const firstEntry = entries && entries.at(0);
+  if (!firstEntry) {
+    return null;
+  }
+
+  return firstEntry[1].feePoolBalance.brand;
+});
 
 export const fromPurseAtom = atom(get => {
   const direction = get(swapDirectionAtom);

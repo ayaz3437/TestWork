@@ -12,7 +12,7 @@ type SwapContext = {
   setCurrentOfferId: (id: number) => void;
   addError: (error: SwapError) => void;
   swapped: boolean;
-  instanceId: string;
+  instanceId?: string | null;
   walletP: ERef<any>;
   fromPurse?: PursesJSONState | null;
   fromValue?: number | null;

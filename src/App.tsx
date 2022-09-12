@@ -10,9 +10,9 @@ import {
   walletAtom,
   pursesAtom,
   offersAtom,
-  instanceIdAtom,
-  governedParamsAtom,
-  metricsAtom,
+  instanceIdsAtom,
+  governedParamsIndexAtom,
+  metricsIndexAtom,
 } from 'store/app';
 import WalletConnection from 'components/WalletConnection';
 import { INTER_LOGO } from 'assets/assets';
@@ -26,9 +26,11 @@ const App = () => {
   const [_brandToInfo, mergeBrandToInfo] = useAtom(brandToInfoAtom);
   const [_purses, setPurses] = useAtom(pursesAtom);
   const [_offers, setOffers] = useAtom(offersAtom);
-  const [_metrics, setMetrics] = useAtom(metricsAtom);
-  const [_governedParams, setGovernedParams] = useAtom(governedParamsAtom);
-  const [_instanceId, setInstanceId] = useAtom(instanceIdAtom);
+  const [_metrics, setMetricsIndex] = useAtom(metricsIndexAtom);
+  const [_governedParams, setGovernedParamsIndex] = useAtom(
+    governedParamsIndexAtom
+  );
+  const [_instanceIds, setInstanceIds] = useAtom(instanceIdsAtom);
 
   useEffect(() => {
     if (wallet === null) return;
@@ -41,15 +43,19 @@ const App = () => {
       console.error('got watchOffers err', err)
     );
 
-    watchContract(wallet, { setMetrics, setGovernedParams, setInstanceId });
+    watchContract(wallet, {
+      setMetricsIndex,
+      setGovernedParamsIndex,
+      setInstanceIds,
+    });
   }, [
     wallet,
     mergeBrandToInfo,
     setPurses,
     setOffers,
-    setMetrics,
-    setGovernedParams,
-    setInstanceId,
+    setMetricsIndex,
+    setGovernedParamsIndex,
+    setInstanceIds,
   ]);
 
   return (

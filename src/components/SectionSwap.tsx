@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiChevronDown } from 'react-icons/fi';
 import { useAtomValue, useAtom } from 'jotai';
-import { AmountMath } from '@agoric/ertp';
-import type { Brand } from '@agoric/ertp';
+import { AmountMath, Brand } from '@agoric/ertp';
+import clsx from 'clsx';
 
 import CustomInput from 'components/CustomInput';
 import DialogSwap from 'components/DialogSwap';
@@ -16,6 +16,10 @@ import {
   fromAmountAtom,
   fromPurseAtom,
   toPurseAtom,
+  swapDirectionAtom,
+  SwapDirection,
+  anchorBrandsAtom,
+  selectedAnchorPetnameAtom,
 } from 'store/swap';
 
 export enum SectionSwapType {
@@ -31,15 +35,26 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
   const [toAmount, setToAmount] = useAtom(toAmountAtom);
   const [fromAmount, setFromAmount] = useAtom(fromAmountAtom);
   const [open, setOpen] = useState(false);
-  const multiBrandsEnabled = useAtomValue(previewEnabledAtom);
+  const swapDirection = useAtomValue(swapDirectionAtom);
+  const previewEnabled = useAtomValue(previewEnabledAtom);
+  const brands = useAtomValue(anchorBrandsAtom);
+  const [_selectedAnchorBrandPetname, setSelectedAnchorBrandPetname] = useAtom(
+    selectedAnchorPetnameAtom
+  );
+
+  const isStable =
+    (swapDirection === SwapDirection.TO_STABLE &&
+      type === SectionSwapType.TO) ||
+    (swapDirection === SwapDirection.TO_ANCHOR &&
+      type === SectionSwapType.FROM);
 
   const value =
     type === SectionSwapType.TO ? toAmount?.value : fromAmount?.value;
 
-  const handleBrandSelected = () => {
-    console.log('TODO: Support multiple anchor brands');
+  const handleBrandSelected = (brand: Brand | null) => {
+    setSelectedAnchorBrandPetname(displayBrandPetname(brand));
+    setOpen(false);
   };
-  const brands: Brand[] = [];
 
   const purse = type === SectionSwapType.TO ? toPurse : fromPurse;
   const brand = purse?.brand;
@@ -77,21 +92,26 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
           </div>
           {purse ? (
             <div
-              className="flex flex-col w-28 hover:bg-black cursor-pointer hover:bg-opacity-5 p-1 rounded-sm"
+              className={clsx(
+                'flex flex-col w-28 p-1 rounded-sm',
+                !isStable && 'hover:bg-black cursor-pointer hover:bg-opacity-5'
+              )}
               onClick={() => {
-                // TODO: Support multiple anchor brands.
-                multiBrandsEnabled && setOpen(true);
+                !isStable && setOpen(true);
               }}
             >
               <div className="flex  items-center justify-between">
                 <h2 className="text-xl uppercase font-medium">
                   {displayBrandPetname(brand)}
                 </h2>
-                {multiBrandsEnabled && <FiChevronDown className="text-xl" />}
+                {!isStable && <FiChevronDown className="text-xl" />}
               </div>
-              <h3 className="text-xs text-gray-500 font-semibold">
-                Purse: <span>{displayPetname(purse?.pursePetname ?? '')}</span>{' '}
-              </h3>
+              {previewEnabled && (
+                <h3 className="text-xs text-gray-500 font-semibold">
+                  Purse:{' '}
+                  <span>{displayPetname(purse?.pursePetname ?? '')}</span>{' '}
+                </h3>
+              )}
             </div>
           ) : (
             <button
