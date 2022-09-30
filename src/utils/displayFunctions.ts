@@ -16,6 +16,22 @@ const getLogoForBrandPetname = (brandPetname: string) => {
   }
 };
 
+const calcTrailingZeros = (value?: bigint) => {
+  if (!value) return 0;
+
+  let zeroes = 0;
+  while (value > 0 && value % 10n === 0n) {
+    zeroes += 1;
+    value /= 10n;
+  }
+  return zeroes;
+};
+
+export const calcSignificantDecimalPlaces = (
+  decimalPlaces: number,
+  value?: bigint
+) => decimalPlaces - calcTrailingZeros(value);
+
 export const displayPetname = (pn: Array<string> | string) =>
   Array.isArray(pn) ? pn.join('.') : pn;
 
@@ -38,8 +54,14 @@ export const makeDisplayFunctions = (brandToInfo: Map<Brand, BrandInfo>) => {
     return stringifyRatio(ratio, getDecimalPlaces, placesToShow);
   };
 
-  const displayAmount = (amount: any, placesToShow: number) => {
+  const displayAmount = (amount: any, placesToShow?: number) => {
     const decimalPlaces = getDecimalPlaces(amount.brand);
+    if (placesToShow === undefined && decimalPlaces) {
+      placesToShow = Math.max(
+        calcSignificantDecimalPlaces(decimalPlaces, amount.value),
+        2
+      );
+    }
     return stringifyValue(
       amount.value,
       AssetKind.NAT,

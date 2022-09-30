@@ -63,20 +63,19 @@ const Swap = () => {
   const anchorPetnames = [...instanceIds.keys()];
   const areAnchorsLoaded =
     anchorPetnames.length &&
-    anchorPetnames
-      .every(petname => {
-        const metrics = metricsIndex.get(petname);
-        const brand = metrics?.anchorPoolBalance.brand;
-        const brandInfo = brand && brandToInfo.get(brand);
-        const governedParams = governedParamsIndex.get(petname);
-        return metrics && brandInfo && governedParams;
-      })
+    anchorPetnames.every(petname => {
+      const metrics = metricsIndex.get(petname);
+      const brand = metrics?.anchorPoolBalance.brand;
+      const brandInfo = brand && brandToInfo.get(brand);
+      const governedParams = governedParamsIndex.get(petname);
+      return metrics && brandInfo && governedParams;
+    });
 
   const switchToAndFrom = useCallback(() => {
-    if (swapDirection === SwapDirection.TO_ANCHOR) {
-      setSwapDirection(SwapDirection.TO_STABLE);
+    if (swapDirection === SwapDirection.WantAnchor) {
+      setSwapDirection(SwapDirection.WantMinted);
     } else {
-      setSwapDirection(SwapDirection.TO_ANCHOR);
+      setSwapDirection(SwapDirection.WantAnchor);
     }
   }, [swapDirection, setSwapDirection]);
 
@@ -207,7 +206,7 @@ const Swap = () => {
       className="flex flex-col p-4 rounded-sm gap-4 w-screen max-w-lg relative select-none overflow-hidden"
     >
       <motion.div className="flex justify-between items-center gap-8 " layout>
-        <h1 className="text-2xl font-semibold text-slate-800">Stable Swap</h1>
+        <h1 className="text-2xl font-semibold text-slate-800">IST Swap</h1>
       </motion.div>
       {!areAnchorsLoaded ? (
         <CustomLoader text="Please connect wallet" />

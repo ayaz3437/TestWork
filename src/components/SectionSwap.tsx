@@ -42,10 +42,10 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
     selectedAnchorPetnameAtom
   );
 
-  const isStable =
-    (swapDirection === SwapDirection.TO_STABLE &&
+  const isMinted =
+    (swapDirection === SwapDirection.WantMinted &&
       type === SectionSwapType.TO) ||
-    (swapDirection === SwapDirection.TO_ANCHOR &&
+    (swapDirection === SwapDirection.WantAnchor &&
       type === SectionSwapType.FROM);
 
   const value =
@@ -94,17 +94,17 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
             <div
               className={clsx(
                 'flex flex-col w-28 p-1 rounded-sm',
-                !isStable && 'hover:bg-black cursor-pointer hover:bg-opacity-5'
+                !isMinted && 'hover:bg-black cursor-pointer hover:bg-opacity-5'
               )}
               onClick={() => {
-                !isStable && setOpen(true);
+                !isMinted && setOpen(true);
               }}
             >
               <div className="flex  items-center justify-between">
                 <h2 className="text-xl uppercase font-medium">
                   {displayBrandPetname(brand)}
                 </h2>
-                {!isStable && <FiChevronDown className="text-xl" />}
+                {!isMinted && <FiChevronDown className="text-xl" />}
               </div>
               {previewEnabled && (
                 <h3 className="text-xs text-gray-500 font-semibold">

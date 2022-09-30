@@ -15,9 +15,9 @@ type SwapContext = {
   instanceId?: string | null;
   walletP: ERef<any>;
   fromPurse?: PursesJSONState | null;
-  fromValue?: number | null;
+  fromValue?: bigint | null;
   toPurse?: PursesJSONState | null;
-  toValue?: number | null;
+  toValue?: bigint | null;
   swapDirection: SwapDirection;
 };
 
@@ -36,7 +36,7 @@ const makeSwapOffer = ({
   assert(toValue, '"to" value must be defined');
 
   const method =
-    swapDirection === SwapDirection.TO_STABLE
+    swapDirection === SwapDirection.WantMinted
       ? 'makeWantMintedInvitation'
       : 'makeGiveMintedInvitation';
 

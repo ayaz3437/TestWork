@@ -23,12 +23,12 @@ const watchGovernance = async (
 
   for await (const { value } of iterateLatest(f)) {
     const current = value.current;
-    const GiveStableFee = current.GiveMintedFee.value;
-    const MintLimit = current.MintLimit.value;
-    const WantStableFee = current.WantMintedFee.value;
+    const giveMintedFee = current.GiveMintedFee.value;
+    const mintLimit = current.MintLimit.value;
+    const wantMintedFee = current.WantMintedFee.value;
 
     setGovernedParamsIndex([
-      [anchorPetname, { GiveStableFee, MintLimit, WantStableFee }],
+      [anchorPetname, { giveMintedFee, mintLimit, wantMintedFee }],
     ]);
   }
 };

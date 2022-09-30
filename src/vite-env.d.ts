@@ -62,4 +62,6 @@ declare module '@agoric/zoe/src/contractSupport' {
   export const floorMultiplyBy;
   export const oneMinus;
   export const floorDivideBy;
+  export const ceilDivideBy;
+  export const ceilMultiplyBy;
 }

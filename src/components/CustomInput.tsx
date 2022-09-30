@@ -4,6 +4,9 @@ import { parseAsValue, stringifyValue } from '@agoric/ui-components';
 import { useAtomValue } from 'jotai';
 import { displayFunctionsAtom } from 'store/app';
 import { PursesJSONState } from '@agoric/wallet-backend';
+import { calcSignificantDecimalPlaces } from 'utils/displayFunctions';
+
+const DEFAULT_PLACES_TO_SHOW = 2;
 
 const CustomInput = ({
   value,
@@ -26,14 +29,23 @@ const CustomInput = ({
   const decimalPlaces = (brand && getDecimalPlaces(brand)) || 0;
   const onMax = () => purse && onChange(purse.currentAmount.value);
 
-  const amountString = stringifyValue(value, AssetKind.NAT, decimalPlaces, 4);
+  const placesToShow = Math.max(
+    calcSignificantDecimalPlaces(decimalPlaces, value),
+    DEFAULT_PLACES_TO_SHOW
+  );
+  const amountString = stringifyValue(
+    value,
+    AssetKind.NAT,
+    decimalPlaces,
+    placesToShow
+  );
   const [fieldString, setFieldString] = useState(
     value === null ? '0' : amountString
   );
 
   const currentAmount = purse
-    ? displayAmount(AmountMath.make(purse.brand, purse.currentAmount.value), 4)
-    : '0.0';
+    ? displayAmount(AmountMath.make(purse.brand, purse.currentAmount.value))
+    : '0.00';
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = ev => {
     const str = ev.target?.value?.replace('-', '').replace('e', '');

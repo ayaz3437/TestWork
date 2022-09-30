@@ -1,10 +1,4 @@
 import { atom } from 'jotai';
-import {
-  makeRatioFromAmounts,
-  floorMultiplyBy,
-  oneMinus,
-  floorDivideBy,
-} from '@agoric/zoe/src/contractSupport';
 import { Amount, AmountMath } from '@agoric/ertp';
 import type { Id as ToastId, ToastOptions } from 'react-toastify';
 
@@ -15,7 +9,13 @@ import {
   pursesAtom,
   instanceIdsAtom,
 } from 'store/app';
-import { filterPursesByBrand } from 'utils/helpers';
+import {
+  calcFromAnchorNeeded,
+  calcFromMintedNeeded,
+  calcToMintedNeeded,
+  calcToAnchorNeeded,
+  filterPursesByBrand,
+} from 'utils/helpers';
 import type { Metrics, GovernedParams } from 'store/app';
 
 export enum SwapError {
@@ -42,8 +42,8 @@ export const defaultToastProperties: ToastOptions = {
 };
 
 export enum SwapDirection {
-  TO_STABLE,
-  TO_ANCHOR,
+  WantAnchor,
+  WantMinted,
 }
 
 export const selectedAnchorPetnameAtom = atom<string | null>(null);
@@ -86,7 +86,7 @@ export const instanceIdAtom = atom<string | null>(get => {
   return get(instanceIdsAtom).get(selectedPetname) ?? null;
 });
 
-export const stableBrandAtom = atom(get => {
+export const mintedBrandAtom = atom(get => {
   const metrics = get(metricsIndexAtom);
   const entries = metrics && [...metrics.entries()];
 
@@ -102,8 +102,8 @@ export const stableBrandAtom = atom(get => {
 export const fromPurseAtom = atom(get => {
   const direction = get(swapDirectionAtom);
   const fromBrand =
-    direction === SwapDirection.TO_ANCHOR
-      ? get(stableBrandAtom)
+    direction === SwapDirection.WantAnchor
+      ? get(mintedBrandAtom)
       : get(anchorBrandAtom);
   const purses = get(pursesAtom);
   return purses && fromBrand && filterPursesByBrand(purses, fromBrand)?.at(0);
@@ -112,8 +112,8 @@ export const fromPurseAtom = atom(get => {
 export const toPurseAtom = atom(get => {
   const direction = get(swapDirectionAtom);
   const toBrand =
-    direction === SwapDirection.TO_STABLE
-      ? get(stableBrandAtom)
+    direction === SwapDirection.WantMinted
+      ? get(mintedBrandAtom)
       : get(anchorBrandAtom);
   const purses = get(pursesAtom);
   return purses && toBrand && filterPursesByBrand(purses, toBrand)?.at(0);
@@ -133,38 +133,38 @@ const anchorUnitAmountAtom = atom(get => {
   return AmountMath.make(anchorBrand, 10n ** BigInt(decimalPlaces));
 });
 
-const stableUnitAmountAtom = atom(get => {
-  const stableBrand = get(stableBrandAtom);
-  if (!stableBrand) {
+const mintedUnitAmountAtom = atom(get => {
+  const mintedBrand = get(mintedBrandAtom);
+  if (!mintedBrand) {
     return null;
   }
 
   const { getDecimalPlaces } = get(displayFunctionsAtom);
-  const decimalPlaces = getDecimalPlaces(stableBrand);
+  const decimalPlaces = getDecimalPlaces(mintedBrand);
   if (!decimalPlaces) {
     return null;
   }
-  return AmountMath.make(stableBrand, 10n ** BigInt(decimalPlaces));
+  return AmountMath.make(mintedBrand, 10n ** BigInt(decimalPlaces));
 });
 
-const fromAmountInnerAtom = atom<Amount | null>(null);
+const fromAmountInnerAtom = atom<Amount<'nat'> | null>(null);
 export const fromAmountAtom = atom(
   get => get(fromAmountInnerAtom),
-  (get, set, newFromAmount: Amount) => {
-    const stableBrand = get(stableBrandAtom);
+  (get, set, newFromAmount: Amount<'nat'>) => {
+    const mintedBrand = get(mintedBrandAtom);
     const anchorBrand = get(anchorBrandAtom);
     const governedParams = get(governedParamsAtom);
     const swapDirection = get(swapDirectionAtom);
     const anchorUnitAmount = get(anchorUnitAmountAtom);
-    const stableUnitAmount = get(stableUnitAmountAtom);
+    const mintedUnitAmount = get(mintedUnitAmountAtom);
 
     if (
       !(
-        stableBrand &&
+        mintedBrand &&
         anchorBrand &&
         governedParams &&
         anchorUnitAmount &&
-        stableUnitAmount
+        mintedUnitAmount
       )
     ) {
       set(fromAmountInnerAtom, newFromAmount);
@@ -175,24 +175,26 @@ export const fromAmountAtom = atom(
     //
     // TODO(https://github.com/Agoric/agoric-sdk/issues/6152): Use code that's
     // tested against the contract.
-    if (swapDirection === SwapDirection.TO_ANCHOR) {
-      const fee = governedParams.GiveStableFee;
-      const fromAmountAfterFee = floorMultiplyBy(newFromAmount, oneMinus(fee));
-      const newToAmount = floorMultiplyBy(
-        fromAmountAfterFee,
-        makeRatioFromAmounts(anchorUnitAmount, stableUnitAmount)
+    if (swapDirection === SwapDirection.WantAnchor) {
+      const fee = governedParams.giveMintedFee;
+      const newToAmount = calcToAnchorNeeded(
+        newFromAmount,
+        fee,
+        anchorUnitAmount,
+        mintedUnitAmount
       );
       set(toAmountInnerAtom, newToAmount);
     }
 
-    if (swapDirection === SwapDirection.TO_STABLE) {
-      const fee = governedParams.WantStableFee;
-      const newToAmount = floorMultiplyBy(
+    if (swapDirection === SwapDirection.WantMinted) {
+      const fee = governedParams.wantMintedFee;
+      const newToAmount = calcToMintedNeeded(
         newFromAmount,
-        makeRatioFromAmounts(stableUnitAmount, anchorUnitAmount)
+        fee,
+        anchorUnitAmount,
+        mintedUnitAmount
       );
-      const toAmountAfterFee = floorMultiplyBy(newToAmount, oneMinus(fee));
-      set(toAmountInnerAtom, toAmountAfterFee);
+      set(toAmountInnerAtom, newToAmount);
     }
 
     // Finally update "from" amount.
@@ -200,24 +202,24 @@ export const fromAmountAtom = atom(
   }
 );
 
-const toAmountInnerAtom = atom<Amount | null>(null);
+const toAmountInnerAtom = atom<Amount<'nat'> | null>(null);
 export const toAmountAtom = atom(
   get => get(toAmountInnerAtom),
-  (get, set, newToAmount: Amount) => {
-    const stableBrand = get(stableBrandAtom);
+  (get, set, newToAmount: Amount<'nat'>) => {
+    const mintedBrand = get(mintedBrandAtom);
     const anchorBrand = get(anchorBrandAtom);
     const governedParams = get(governedParamsAtom);
     const swapDirection = get(swapDirectionAtom);
     const anchorUnitAmount = get(anchorUnitAmountAtom);
-    const stableUnitAmount = get(stableUnitAmountAtom);
+    const mintedUnitAmount = get(mintedUnitAmountAtom);
 
     if (
       !(
-        stableBrand &&
+        mintedBrand &&
         anchorBrand &&
         governedParams &&
         anchorUnitAmount &&
-        stableUnitAmount
+        mintedUnitAmount
       )
     ) {
       set(toAmountInnerAtom, newToAmount);
@@ -225,25 +227,24 @@ export const toAmountAtom = atom(
     }
 
     // Auto-fill "from" amount when "to" amount is entered.
-    if (swapDirection === SwapDirection.TO_ANCHOR) {
-      const fee = governedParams.GiveStableFee;
-      const newFromAmount = floorMultiplyBy(
+    if (swapDirection === SwapDirection.WantAnchor) {
+      const fee = governedParams.giveMintedFee;
+      const newFromAmount = calcFromMintedNeeded(
         newToAmount,
-        makeRatioFromAmounts(stableUnitAmount, anchorUnitAmount)
+        fee,
+        anchorUnitAmount,
+        mintedUnitAmount
       );
-      const fromAmountBeforeFee = floorDivideBy(newFromAmount, oneMinus(fee));
-      set(fromAmountInnerAtom, fromAmountBeforeFee);
+      set(fromAmountInnerAtom, newFromAmount);
     }
 
-    if (swapDirection === SwapDirection.TO_STABLE) {
-      const fee = governedParams.WantStableFee;
-      const stableEquivalentBeforeFee = floorDivideBy(
+    if (swapDirection === SwapDirection.WantMinted) {
+      const fee = governedParams.wantMintedFee;
+      const newFromAmount = calcFromAnchorNeeded(
         newToAmount,
-        oneMinus(fee)
-      );
-      const newFromAmount = floorMultiplyBy(
-        stableEquivalentBeforeFee,
-        makeRatioFromAmounts(anchorUnitAmount, stableUnitAmount)
+        fee,
+        anchorUnitAmount,
+        mintedUnitAmount
       );
       set(fromAmountInnerAtom, newFromAmount);
     }
@@ -253,7 +254,7 @@ export const toAmountAtom = atom(
   }
 );
 
-const swapDirectionInnerAtom = atom<SwapDirection>(SwapDirection.TO_STABLE);
+const swapDirectionInnerAtom = atom<SwapDirection>(SwapDirection.WantMinted);
 export const swapDirectionAtom = atom(
   get => get(swapDirectionInnerAtom),
   (_get, set, newDirection: SwapDirection) => {

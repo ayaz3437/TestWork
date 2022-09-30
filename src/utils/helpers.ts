@@ -1,7 +1,15 @@
 import { displayPetname } from 'utils/displayFunctions';
 import { PursesJSONState } from '@agoric/wallet-backend';
-import { Brand } from '@agoric/ertp';
+import { Amount, Brand } from '@agoric/ertp';
 import { atom } from 'jotai';
+import {
+  Ratio,
+  makeRatioFromAmounts,
+  floorMultiplyBy,
+  oneMinus,
+  ceilDivideBy,
+  ceilMultiplyBy,
+} from '@agoric/zoe/src/contractSupport';
 
 export const getPurseAssetKind = (purse: PursesJSONState) =>
   (purse && purse.displayInfo && purse.displayInfo.assetKind) || undefined;
@@ -29,5 +37,57 @@ export const mapAtom = <K, V>() => {
       const old = get(innerAtom).entries();
       set(innerAtom, new Map([...old, ...newEntries]));
     }
+  );
+};
+
+export const calcFromAnchorNeeded = (
+  toMintedAmount: Amount<'nat'>,
+  fee: Ratio,
+  anchorUnitAmount: Amount<'nat'>,
+  mintedUnitAmount: Amount<'nat'>
+) => {
+  const anchorEquivalentBeforeFee = ceilDivideBy(toMintedAmount, oneMinus(fee));
+  return ceilMultiplyBy(
+    anchorEquivalentBeforeFee,
+    makeRatioFromAmounts(anchorUnitAmount, mintedUnitAmount)
+  );
+};
+
+export const calcFromMintedNeeded = (
+  toAnchorAmount: Amount<'nat'>,
+  fee: Ratio,
+  anchorUnitAmount: Amount<'nat'>,
+  mintedUnitAmount: Amount<'nat'>
+) => {
+  const mintedEquivalentBeforeFee = ceilMultiplyBy(
+    toAnchorAmount,
+    makeRatioFromAmounts(mintedUnitAmount, anchorUnitAmount)
+  );
+  return ceilDivideBy(mintedEquivalentBeforeFee, oneMinus(fee));
+};
+
+export const calcToMintedNeeded = (
+  fromAnchorAmount: Amount<'nat'>,
+  fee: Ratio,
+  anchorUnitAmount: Amount<'nat'>,
+  mintedUnitAmount: Amount<'nat'>
+) => {
+  const newToAmount = floorMultiplyBy(
+    fromAnchorAmount,
+    makeRatioFromAmounts(mintedUnitAmount, anchorUnitAmount)
+  );
+  return floorMultiplyBy(newToAmount, oneMinus(fee));
+};
+
+export const calcToAnchorNeeded = (
+  fromMintedAmount: Amount<'nat'>,
+  fee: Ratio,
+  anchorUnitAmount: Amount<'nat'>,
+  mintedUnitAmount: Amount<'nat'>
+) => {
+  const fromAmountAfterFee = floorMultiplyBy(fromMintedAmount, oneMinus(fee));
+  return floorMultiplyBy(
+    fromAmountAfterFee,
+    makeRatioFromAmounts(anchorUnitAmount, mintedUnitAmount)
   );
 };

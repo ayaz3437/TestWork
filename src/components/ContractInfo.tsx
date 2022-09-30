@@ -1,5 +1,8 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useAtomValue } from 'jotai';
+import { AmountMath } from '@agoric/ertp';
+
 import { displayFunctionsAtom } from 'store/app';
 import { governedParamsAtom, metricsAtom } from 'store/swap';
 import { swapDirectionAtom, SwapDirection } from 'store/swap';
@@ -15,17 +18,49 @@ const InfoItem = ({
 );
 
 const ContractInfo = () => {
-  const { GiveStableFee, WantStableFee } =
+  const { giveMintedFee, wantMintedFee, mintLimit } =
     useAtomValue(governedParamsAtom) ?? {};
-  const { anchorPoolBalance } = useAtomValue(metricsAtom) ?? {};
+  const { anchorPoolBalance, mintedPoolBalance } =
+    useAtomValue(metricsAtom) ?? {};
   const { displayPercent, displayAmount, displayBrandPetname } =
     useAtomValue(displayFunctionsAtom);
 
   const swapDirection = useAtomValue(swapDirectionAtom);
   const fee =
-    swapDirection === SwapDirection.TO_STABLE ? WantStableFee : GiveStableFee;
+    swapDirection === SwapDirection.WantMinted ? wantMintedFee : giveMintedFee;
 
-  return fee && anchorPoolBalance ? (
+  const anchorAvailable = useMemo(() => {
+    if (!anchorPoolBalance) return null;
+
+    return (
+      <InfoItem>
+        {displayBrandPetname(anchorPoolBalance.brand)} Available
+        <div className="pr-2">
+          {anchorPoolBalance && displayAmount(anchorPoolBalance)}
+        </div>
+      </InfoItem>
+    );
+  }, [anchorPoolBalance, displayAmount, displayBrandPetname]);
+
+  const mintedAvailable = useMemo(() => {
+    if (!mintLimit || !mintedPoolBalance) return null;
+
+    return (
+      <InfoItem>
+        {displayBrandPetname(mintLimit?.brand)} Available
+        <div className="pr-2">
+          {displayAmount(AmountMath.subtract(mintLimit, mintedPoolBalance))}
+        </div>
+      </InfoItem>
+    );
+  }, [mintLimit, mintedPoolBalance, displayAmount, displayBrandPetname]);
+
+  const amountAvailable =
+    swapDirection === SwapDirection.WantMinted
+      ? mintedAvailable
+      : anchorAvailable;
+
+  return fee && amountAvailable ? (
     <motion.div className="flex flex-col" layout>
       <InfoItem>
         Exchange Rate
@@ -35,13 +70,7 @@ const ContractInfo = () => {
         Fee
         <div className="pr-2">{displayPercent(fee, 2)}%</div>
       </InfoItem>
-      <InfoItem>
-        Reserve Balance
-        <div className="pr-2">
-          {displayAmount(anchorPoolBalance, 2)}{' '}
-          {displayBrandPetname(anchorPoolBalance?.brand)}
-        </div>
-      </InfoItem>
+      {amountAvailable}
     </motion.div>
   ) : (
     <></>
