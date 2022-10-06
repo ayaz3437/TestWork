@@ -45,12 +45,15 @@ const ContractInfo = () => {
   const mintedAvailable = useMemo(() => {
     if (!mintLimit || !mintedPoolBalance) return null;
 
+    const amount =
+    mintLimit.value >= mintedPoolBalance.value
+        ? displayAmount(AmountMath.subtract(mintLimit, mintedPoolBalance))
+        : '0.00';
+
     return (
       <InfoItem>
         {displayBrandPetname(mintLimit?.brand)} Available
-        <div className="pr-2">
-          {displayAmount(AmountMath.subtract(mintLimit, mintedPoolBalance))}
-        </div>
+        <div className="pr-2">{amount}</div>
       </InfoItem>
     );
   }, [mintLimit, mintedPoolBalance, displayAmount, displayBrandPetname]);
