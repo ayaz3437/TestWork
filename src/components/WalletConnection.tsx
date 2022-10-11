@@ -45,7 +45,7 @@ const WalletConnection = () => {
       {({ open }) => (
         <>
           <Popover.Button className="border border-primary focus:outline-none group inline-flex items-center rounded-md px-3 py-2 bg-transparent text-base font-medium text-primary">
-            <span>Wallet</span>
+            <span>Connect Wallet</span>
             <BiChevronDown className="ml-2 h-5 w-5" aria-hidden="true" />
           </Popover.Button>
           <Popover.Panel
