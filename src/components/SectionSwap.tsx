@@ -87,8 +87,8 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
           Swap {type}
         </h3>
         <div className="flex gap-3 items-center">
-          <div className="w-12 h-12">
-            <img alt="brand icon" src={displayBrandIcon(brand)} />
+          <div className="w-8 h-8">
+            <img className="w-8 h-8" alt="brand icon" src={displayBrandIcon(brand)} />
           </div>
           {purse ? (
             <div
@@ -100,8 +100,8 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
                 !isMinted && setOpen(true);
               }}
             >
-              <div className="flex  items-center justify-between">
-                <h2 className="text-xl uppercase font-medium">
+              <div className="flex items-center justify-between">
+                <h2 className="text-base uppercase font-medium">
                   {displayBrandPetname(brand)}
                 </h2>
                 {!isMinted && <FiChevronDown className="text-xl" />}
