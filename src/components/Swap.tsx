@@ -232,7 +232,7 @@ const Swap = () => {
       <ContractInfo />
       <motion.button
         className={clsx(
-          'flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-xl font-medium p-3  uppercase',
+          'flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-xl font-medium p-3 uppercase',
           areAnchorsLoaded
             ? 'bg-primary hover:bg-primaryDark text-white'
             : 'text-gray-500'

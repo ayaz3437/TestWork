@@ -101,7 +101,7 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
               }}
             >
               <div className="flex items-center justify-between">
-                <h2 className="text-base uppercase font-medium">
+                <h2 className="text-base font-medium">
                   {displayBrandPetname(brand)}
                 </h2>
                 {!isMinted && <FiChevronDown className="text-xl" />}

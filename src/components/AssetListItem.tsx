@@ -19,7 +19,7 @@ const AssetListItem = ({ brand }: { brand: Brand }) => {
         </div>
 
         <div className="flex flex-col">
-          <h3 className="uppercase font-semibold">
+          <h3 className="font-semibold">
             {displayBrandPetname(brand)}
           </h3>
         </div>
