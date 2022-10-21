@@ -130,7 +130,7 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
             onChange={handleValueChange}
             brand={brand}
             purse={purse}
-            showMaxButton={type === SectionSwapType.FROM}
+            showMaxButton={type === SectionSwapType.FROM && !isMinted}
           />
         </div>
       </motion.div>
