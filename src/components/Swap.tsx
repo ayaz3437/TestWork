@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FiRepeat, FiCheck } from 'react-icons/fi';
+import { FiRepeat, FiCheck, FiHelpCircle } from 'react-icons/fi';
 import { BiErrorCircle } from 'react-icons/bi';
 import clsx from 'clsx';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
@@ -207,6 +207,14 @@ const Swap = () => {
     >
       <motion.div className="flex justify-between items-center gap-8 " layout>
         <h1 className="text-2xl font-semibold text-slate-800">IST Swap</h1>
+        <span className="text-2xl text-blue-500 hover:text-blue-700">
+          <a
+            href="https://docs.inter.trade/user-how-to/minting-ist/mainnet-minting-ist-using-the-psm"
+            target="psm_guide"
+          >
+            <FiHelpCircle />
+          </a>
+        </span>
       </motion.div>
       {!areAnchorsLoaded ? (
         <CustomLoader text="Please connect wallet" />

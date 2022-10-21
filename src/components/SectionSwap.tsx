@@ -88,7 +88,11 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
         </h3>
         <div className="flex gap-3 items-center">
           <div className="w-8 h-8">
-            <img className="w-8 h-8" alt="brand icon" src={displayBrandIcon(brand)} />
+            <img
+              className="w-8 h-8"
+              alt="brand icon"
+              src={displayBrandIcon(brand)}
+            />
           </div>
           {purse ? (
             <div
@@ -126,7 +130,7 @@ const SectionSwap = ({ type }: { type: SectionSwapType }) => {
             onChange={handleValueChange}
             brand={brand}
             purse={purse}
-            showMaxButton={type === SectionSwapType.FROM}
+            showMaxButton={type === SectionSwapType.FROM && !isMinted}
           />
         </div>
       </motion.div>

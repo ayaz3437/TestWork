@@ -16,9 +16,9 @@ const getLogoForBrandPetname = (brandPetname: string) => {
     case 'USDC_grv':
       return 'USDC_grv.webp';
     case 'USDT_axl':
-        return 'USDT_axl.png';
+      return 'USDT_axl.png';
     case 'USDT_grv':
-        return 'USDT_grv.webp';
+      return 'USDT_grv.webp';
     default:
       return 'default.png';
   }
@@ -36,7 +36,7 @@ const calcTrailingZeros = (value: bigint) => {
 export const calcSignificantDecimalPlaces = (
   decimalPlaces: number,
   value?: bigint
-) => value ? decimalPlaces - calcTrailingZeros(value) : 0;
+) => (value ? decimalPlaces - calcTrailingZeros(value) : 0);
 
 export const displayPetname = (pn: Array<string> | string) =>
   Array.isArray(pn) ? pn.join('.') : pn;

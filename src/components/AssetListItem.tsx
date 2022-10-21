@@ -15,13 +15,15 @@ const AssetListItem = ({ brand }: { brand: Brand }) => {
     >
       <div className="flex gap-3 items-center">
         <div className="w-8 h-8 rounded-full">
-          <img className="w-8 h-8" src={displayBrandIcon(brand)} alt={displayBrandPetname(brand)} />
+          <img
+            className="w-8 h-8"
+            src={displayBrandIcon(brand)}
+            alt={displayBrandPetname(brand)}
+          />
         </div>
 
         <div className="flex flex-col">
-          <h3 className="font-semibold">
-            {displayBrandPetname(brand)}
-          </h3>
+          <h3 className="font-semibold">{displayBrandPetname(brand)}</h3>
         </div>
       </div>
     </div>

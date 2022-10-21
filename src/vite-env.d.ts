@@ -28,7 +28,7 @@ declare module '@agoric/ertp' {
 
 declare module '@agoric/wallet-backend' {
   export type PursesJSONState = {
-    brand: Brand;
+    brand: import('@agoric/ertp').Brand;
     /** The board ID for this purse's brand */
     brandBoardId: string;
     /** The board ID for the deposit-only facet of this purse */
