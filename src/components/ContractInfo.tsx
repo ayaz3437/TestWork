@@ -46,7 +46,7 @@ const ContractInfo = () => {
     if (!mintLimit || !mintedPoolBalance) return null;
 
     const amount =
-    mintLimit.value >= mintedPoolBalance.value
+      mintLimit.value >= mintedPoolBalance.value
         ? displayAmount(AmountMath.subtract(mintLimit, mintedPoolBalance))
         : '0.00';
 
