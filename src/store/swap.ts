@@ -1,6 +1,5 @@
 import { atom } from 'jotai';
 import { Amount, AmountMath } from '@agoric/ertp';
-import type { Id as ToastId, ToastOptions } from 'react-toastify';
 
 import {
   displayFunctionsAtom,
@@ -23,23 +22,6 @@ export enum SwapError {
   EMPTY_AMOUNTS = 'Please enter the amounts first.',
   NO_BRANDS = 'Please select an asset first.',
 }
-
-export enum ButtonStatus {
-  SWAP = 'Swap',
-  SWAPPED = 'Swapped',
-  REJECTED = 'Rejected',
-  DECLINED = 'Declined',
-}
-
-export const defaultToastProperties: ToastOptions = {
-  position: 'bottom-right',
-  autoClose: 3000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  containerId: 'Info',
-};
 
 export enum SwapDirection {
   WantAnchor,
@@ -263,11 +245,6 @@ export const swapDirectionAtom = atom(
     set(swapDirectionInnerAtom, newDirection);
   }
 );
-
-export const toastIdAtom = atom<ToastId | null>(null);
-export const currentOfferIdAtom = atom<number | null>(null);
-export const swapButtonStatusAtom = atom<ButtonStatus>(ButtonStatus.SWAP);
-export const swapInProgressAtom = atom<boolean>(false);
 
 const errorsInnerAtom = atom<Set<SwapError>>(new Set<SwapError>());
 export const errorsAtom = atom(get => get(errorsInnerAtom));

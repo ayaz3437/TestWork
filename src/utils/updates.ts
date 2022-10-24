@@ -1,11 +1,5 @@
-import { E, ERef } from '@endo/eventual-send';
 import { makeAsyncIterableFromNotifier as iterateNotifier } from '@agoric/notifier';
-import {
-  iterateLatest,
-  makeLeader,
-  makeFollower,
-  Leader,
-} from '@agoric/casting';
+import { iterateLatest, makeFollower, Leader } from '@agoric/casting';
 import { dappConfig } from 'config';
 import type { Metrics, GovernedParams, BrandInfo } from 'store/app';
 import type { Marshal } from '@endo/marshal';
@@ -44,6 +38,7 @@ const watchMetrics = async (
   const f = makeFollower(spec, leader, { unserializer });
 
   for await (const { value } of iterateLatest(f)) {
+    console.log('got metrics', value);
     setMetricsIndex([[anchorPetname, value]]);
   }
 };
@@ -69,8 +64,6 @@ const watchInstanceIds = async (
         ([key, boardId]) =>
           [key.slice(INSTANCE_NAME_PREFIX.length), boardId] as [string, string]
       );
-
-    console.log('instance ids', PSMEntries);
 
     setters.setInstanceIds(PSMEntries);
 
@@ -107,24 +100,23 @@ declare type ContractSetters = {
   setGovernedParamsIndex: (params: [string, GovernedParams][]) => void;
 };
 
-export const watchContract = async (wallet: any, setters: ContractSetters) => {
-  const [walletUnserializer, netConfig] = await Promise.all([
-    E(wallet).getUnserializer(),
-    E(wallet).getNetConfig(),
-  ]);
-  const leader = makeLeader(netConfig);
+export const watchContract = async (
+  chainConnection: { leader: any; unserializer: Marshal<any> },
+  setters: ContractSetters
+) => {
+  const { leader, unserializer } = chainConnection;
 
-  watchInstanceIds(leader, setters, walletUnserializer).catch((err: Error) =>
+  watchInstanceIds(leader, setters, unserializer).catch((err: Error) =>
     console.error('got loadInstanceIds err', err)
   );
 };
 
 export const watchPurses = async (
-  wallet: ERef<any>,
+  chainConnection: { pursesNotifier: any },
   setPurses: (purses: PursesJSONState[]) => void,
   mergeBrandToInfo: (entries: Iterable<Iterable<any>>) => void
 ) => {
-  const n = await E(wallet).getPursesNotifier();
+  const n = chainConnection.pursesNotifier;
   for await (const purses of iterateNotifier(n)) {
     setPurses(purses);
 
@@ -140,15 +132,5 @@ export const watchPurses = async (
 
       mergeBrandToInfo([[brand, newInfo]]);
     }
-  }
-};
-
-export const watchOffers = async (
-  wallet: any,
-  setOffers: (offers: any) => void
-) => {
-  const offerNotifier = E(wallet).getOffersNotifier();
-  for await (const offers of iterateNotifier(offerNotifier)) {
-    setOffers(offers);
   }
 };

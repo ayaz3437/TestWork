@@ -1,7 +1,14 @@
 /// <reference types="vite/client" />
 
+declare module '@agoric/web-components' {
+  export const makeAgoricKeplrConnection;
+  export const AgoricKeplrConnectionErrors;
+  export const BridgeProtocol;
+}
+
 declare module '@agoric/web-components/react' {
   export const makeReactAgoricWalletConnection;
+  export const makeReactDappWalletBridge;
 }
 
 declare module '@agoric/notifier' {

@@ -1,50 +1,40 @@
-import { toast } from 'react-toastify';
-import { E } from '@endo/eventual-send';
-import type { ERef } from '@endo/eventual-send';
-import type { Id as ToastId } from 'react-toastify';
-
-import { defaultToastProperties, SwapError, SwapDirection } from 'store/swap';
 import type { PursesJSONState } from '@agoric/wallet-backend';
+import { E } from '@endo/eventual-send';
+
+import { SwapDirection } from 'store/swap';
+import { WalletBridge } from 'store/app';
 
 type SwapContext = {
-  setToastId: (id: ToastId) => void;
-  setSwapped: (swapped: boolean) => void;
-  setCurrentOfferId: (id: number) => void;
-  addError: (error: SwapError) => void;
-  swapped: boolean;
-  instanceId?: string | null;
-  walletP: ERef<any>;
-  fromPurse?: PursesJSONState | null;
-  fromValue?: bigint | null;
-  toPurse?: PursesJSONState | null;
-  toValue?: bigint | null;
+  wallet: WalletBridge;
+  instanceId: string;
+  fromPurse: PursesJSONState;
+  fromValue: bigint;
+  toPurse: PursesJSONState;
+  toValue: bigint;
   swapDirection: SwapDirection;
+  marshal: any;
 };
 
-const makeSwapOffer = ({
+export const makeSwapOffer = async ({
+  wallet,
   instanceId,
-  walletP,
   fromPurse,
   fromValue,
   toPurse,
   toValue,
   swapDirection,
+  marshal,
 }: SwapContext) => {
-  assert(fromPurse, '"from" purse must be defined');
-  assert(fromValue, '"from" value must be defined');
-  assert(toPurse, '"to" purse must be defined');
-  assert(toValue, '"to" value must be defined');
-
   const method =
     swapDirection === SwapDirection.WantMinted
       ? 'makeWantMintedInvitation'
       : 'makeGiveMintedInvitation';
 
+  const serializedInstance = await E(marshal).serialize(instanceId);
+
   const offerConfig = {
-    invitationMaker: {
-      method,
-    },
-    instanceHandleBoardId: instanceId,
+    publicInvitationMaker: method,
+    instanceHandle: serializedInstance,
     proposalTemplate: {
       give: {
         In: {
@@ -62,43 +52,5 @@ const makeSwapOffer = ({
   };
 
   console.info('OFFER CONFIG: ', offerConfig);
-  return E(walletP).addOffer(offerConfig);
-};
-
-export const doSwap = async (context: SwapContext) => {
-  const {
-    setToastId,
-    setSwapped,
-    setCurrentOfferId,
-    addError,
-    swapped,
-    toPurse,
-    fromPurse,
-    fromValue,
-    toValue,
-  } = context;
-
-  if (swapped) {
-    addError(SwapError.IN_PROGRESS);
-    return;
-  } else if (!(fromPurse && toPurse)) {
-    addError(SwapError.NO_BRANDS);
-    return;
-  } else if (!(toValue && toValue > 0n && fromValue && fromValue > 0n)) {
-    addError(SwapError.EMPTY_AMOUNTS);
-    return;
-  }
-
-  const offerId = await makeSwapOffer(context);
-  setCurrentOfferId(offerId);
-  setSwapped(true);
-  setToastId(
-    toast('Please approve the offer in your wallet.', {
-      ...defaultToastProperties,
-      type: toast.TYPE.INFO,
-      progress: undefined,
-      hideProgressBar: true,
-      autoClose: false,
-    })
-  );
+  wallet.addOffer(offerConfig);
 };
