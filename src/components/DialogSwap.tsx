@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { AnimatePresence, motion } from 'framer-motion';
-import { FiX } from 'react-icons/fi';
+import { FiX, FiExternalLink } from 'react-icons/fi';
 
 import { Brand } from '@agoric/ertp';
 import AssetDialog from 'components/AssetDialog';
@@ -38,12 +38,24 @@ const DialogSwap = ({
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
           >
-            <div className="flex  justify-between gap-4 p-3 border-b  items-center">
-              <h2 className="text-xl font-semibold px-2">Select Asset</h2>
-              <FiX
-                className="text-3xl hover:bg-gray-100 p-1 rounded-sm cursor-pointer"
+            <div className="flex justify-between gap-4 p-3 border-b items-start">
+              <div>
+                <h2 className="text-xl font-semibold px-2">Select Asset</h2>
+                <a
+                  href="https://docs.inter.trade/user-how-to/mainnet-only-bridge-external-tokens-to-agoric"
+                  target="bridge-docs"
+                  className="px-2 text-sm text-blue-500 hover:text-blue-700"
+                >
+                  Bridge Tokens{' '}
+                  <FiExternalLink className="inline align-baseline" />
+                </a>
+              </div>
+              <button
+                className="text-2xl hover:bg-gray-100 p-1 rounded-sm cursor-pointer"
                 onClick={handleClose}
-              />
+              >
+                <FiX />
+              </button>
             </div>
             <AssetDialog
               handleBrandSelected={handleBrandSelected}
