@@ -113,7 +113,7 @@ const Swap = () => {
           >
             {walletUiHref}
           </a>{' '}
-          for appproval.
+          for approval.
         </p>,
         { hideProgressBar: false, autoClose: 5000 }
       );
