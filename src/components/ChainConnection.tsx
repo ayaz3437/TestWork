@@ -17,9 +17,11 @@ import {
   metricsIndexAtom,
   chainConnectionAtom,
   networkConfigAtom,
+  termsIndexAgreedUponAtom,
 } from 'store/app';
 import { watchContract, watchPurses } from 'utils/updates';
 import NetworkDropdown from 'components/NetworkDropdown';
+import TermsDialog, { currentTermsIndex } from './TermsDialog';
 
 import 'styles/globals.css';
 import clsx from 'clsx';
@@ -34,6 +36,14 @@ const ChainConnection = () => {
   const setGovernedParamsIndex = useSetAtom(governedParamsIndexAtom);
   const setInstanceIds = useSetAtom(instanceIdsAtom);
   const networkConfig = useAtomValue(networkConfigAtom);
+  const termsAgreed = useAtomValue(termsIndexAgreedUponAtom);
+  const [isTermsDialogOpen, setIsTermsDialogOpen] = useState(false);
+  const areLatestTermsAgreed = termsAgreed === currentTermsIndex;
+
+  const handleTermsDialogClose = () => {
+    setIsTermsDialogOpen(false);
+    connect(false);
+  };
 
   useEffect(() => {
     if (chainConnection === null) return;
@@ -57,8 +67,14 @@ const ChainConnection = () => {
     setInstanceIds,
   ]);
 
-  const connect = async () => {
+  const connect = async (checkTerms = true) => {
     if (connectionInProgress || chainConnection) return;
+
+    if (checkTerms && !areLatestTermsAgreed) {
+      setIsTermsDialogOpen(true);
+      return;
+    }
+
     let connection;
     setConnectionInProgress(true);
     try {
@@ -116,7 +132,7 @@ const ChainConnection = () => {
           'border border-primary group inline-flex items-center rounded-md px-3 py-2 bg-transparent text-base font-medium text-primary',
           !connectionInProgress && !chainConnection && 'hover:bg-gray-100'
         )}
-        onClick={connect}
+        onClick={() => connect()}
       >
         {status}
         {connectionInProgress && (
@@ -125,6 +141,10 @@ const ChainConnection = () => {
           </div>
         )}
       </button>
+      <TermsDialog
+        isOpen={isTermsDialogOpen}
+        onClose={handleTermsDialogClose}
+      />
     </div>
   );
 };

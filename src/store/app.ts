@@ -55,6 +55,8 @@ export const networkConfigAtom = atomWithStorage(
   networkConfigs.mainnet
 );
 
+export const termsIndexAgreedUponAtom = atomWithStorage('terms-agreed', -1);
+
 /** A map of anchor brand petnames to their instance ids. */
 export const instanceIdsAtom = mapAtom<string, string>();
 
