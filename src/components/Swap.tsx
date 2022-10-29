@@ -20,6 +20,8 @@ import {
 } from 'store/app';
 import { instanceIdAtom } from 'store/swap';
 import {
+  governedParamsAtom,
+  metricsAtom,
   fromAmountAtom,
   SwapDirection,
   swapDirectionAtom,
@@ -53,6 +55,9 @@ const Swap = () => {
   const toPurse = useAtomValue(toPurseAtom);
   const instanceIds = useAtomValue(instanceIdsAtom);
   const walletUiHref = useAtomValue(walletUiHrefAtom);
+  const { mintLimit } = useAtomValue(governedParamsAtom) ?? {};
+  const { anchorPoolBalance, mintedPoolBalance } =
+    useAtomValue(metricsAtom) ?? {};
 
   const anchorPetnames = [...instanceIds.keys()];
   const areAnchorsLoaded =
@@ -82,9 +87,39 @@ const Swap = () => {
     if (!(fromPurse && toPurse && instanceId)) {
       addError(SwapError.NO_BRANDS);
       return;
-    } else if (!(toValue && toValue > 0n && fromValue && fromValue > 0n)) {
+    }
+
+    if (!(toValue && toValue > 0n && fromValue && fromValue > 0n)) {
       addError(SwapError.EMPTY_AMOUNTS);
       return;
+    }
+
+    if ((fromPurse.value ?? 0n) < fromValue) {
+      addError(SwapError.PURSE_BALANCE);
+      return;
+    }
+
+    if (swapDirection === SwapDirection.WantMinted) {
+      if (!mintLimit || !mintedPoolBalance) {
+        addError(SwapError.MINT_LIMIT);
+        return;
+      }
+
+      const valueLeftToMint =
+        (mintLimit.value ?? 0n) >= (mintedPoolBalance.value ?? 0n)
+          ? (mintLimit.value ?? 0n) - (mintedPoolBalance.value ?? 0n)
+          : 0n;
+      if (toValue > valueLeftToMint) {
+        addError(SwapError.MINT_LIMIT);
+        return;
+      }
+    }
+
+    if (swapDirection === SwapDirection.WantAnchor) {
+      if (!anchorPoolBalance || toValue > (anchorPoolBalance.value ?? 0n)) {
+        addError(SwapError.ANCHOR_LIMIT);
+        return;
+      }
     }
 
     try {
@@ -134,30 +169,37 @@ const Swap = () => {
       );
     }
   }, [
-    walletUiHref,
-    setSwapped,
-    swapped,
-    addError,
     areAnchorsLoaded,
+    bridgeApproved,
+    wallet,
+    swapped,
     fromAmount?.value,
+    toAmount?.value,
     fromPurse,
+    toPurse,
     instanceId,
     swapDirection,
-    toAmount?.value,
-    toPurse,
-    wallet,
-    bridgeApproved,
-    chainConnection,
+    addError,
+    mintLimit,
+    mintedPoolBalance,
+    anchorPoolBalance,
+    chainConnection?.unserializer,
+    walletUiHref,
   ]);
 
   useEffect(() => {
     removeError(SwapError.EMPTY_AMOUNTS);
+    removeError(SwapError.PURSE_BALANCE);
+    removeError(SwapError.MINT_LIMIT);
+    removeError(SwapError.ANCHOR_LIMIT);
   }, [fromAmount, toAmount, removeError]);
 
   useEffect(() => {
-    if (fromPurse && toPurse) {
-      removeError(SwapError.NO_BRANDS);
-    }
+    removeError(SwapError.NO_BRANDS);
+    removeError(SwapError.EMPTY_AMOUNTS);
+    removeError(SwapError.PURSE_BALANCE);
+    removeError(SwapError.MINT_LIMIT);
+    removeError(SwapError.ANCHOR_LIMIT);
   }, [toPurse, fromPurse, removeError]);
 
   const errorsToRender: JSX.Element[] = [];
