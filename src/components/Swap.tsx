@@ -94,7 +94,7 @@ const Swap = () => {
       return;
     }
 
-    if ((fromPurse.value ?? 0n) < fromValue) {
+    if ((fromPurse.currentAmount?.value ?? 0n) < fromValue) {
       addError(SwapError.PURSE_BALANCE);
       return;
     }
