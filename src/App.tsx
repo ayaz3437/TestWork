@@ -32,6 +32,15 @@ const App = () => {
           <WalletBridge />
           <ChainConnection />
         </motion.div>
+        <motion.div className="relative flex flex-row w-full justify-center items-center">
+          <strong>Thanks for your interest in the PSM launch!</strong>
+        </motion.div>
+        <motion.div className="relative flex flex-row w-full justify-center items-center">
+            <a className="underline text-blue-500" href="https://community.agoric.com/t/ist-minting-limits-for-inter-protocol-mvp-launch/87">IST minting limits for Inter Protocol MVP launch</a>
+            &nbsp; are
+            limited for the first 7 days
+            as a prudent method of managing risk at launch.
+        </motion.div>
         <motion.div className="min-w-screen container mx-auto flex justify-center mt-16">
           <Swap />
         </motion.div>
