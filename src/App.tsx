@@ -37,7 +37,7 @@ const App = () => {
         </motion.div>
         <motion.div className="relative flex flex-row w-full justify-center items-center">
             <a className="underline text-blue-500" href="https://community.agoric.com/t/ist-minting-limits-for-inter-protocol-mvp-launch/87">IST minting limits for Inter Protocol MVP launch</a>
-            &nbsp; are initially low as a prudent method of managing risk at launch.
+            &nbsp; are limited for the first 7 days.
         </motion.div>
         <motion.div className="min-w-screen container mx-auto flex justify-center mt-16">
           <Swap />
