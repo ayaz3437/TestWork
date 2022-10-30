@@ -21,8 +21,8 @@ export enum SwapError {
   EMPTY_AMOUNTS = 'Please enter the amounts first.',
   NO_BRANDS = 'Please select an asset first.',
   PURSE_BALANCE = 'Insufficient purse balance.',
-  MINT_LIMIT = 'Error: Unable to create swap offer. The amount would exceed the mint limit for the selected token.',
-  ANCHOR_LIMIT = 'Error: Unable to create swap offer. The amount would exceed the number of available tokens.',
+  MINT_LIMIT = 'Error: Unable to create swap offer. Amount would exceed the mint limit for the selected token.',
+  ANCHOR_LIMIT = 'Error: Unable to create swap offer. Amount would exceed the number of available tokens.',
 }
 
 export enum SwapDirection {
