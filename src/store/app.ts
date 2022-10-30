@@ -16,6 +16,11 @@ export type WalletBridge = {
   addOffer: (offerConfig: any) => void;
 };
 
+export const bannerIndexDismissedAtom = atomWithStorage(
+  'banner-index-dismissed',
+  -1
+);
+
 export const bridgeApprovedAtom = atom(false);
 
 const prodBridgeHref = 'https://wallet.agoric.app/wallet/bridge.html';

@@ -6,6 +6,7 @@ import WalletBridge from 'components/WalletBridge';
 import Swap from 'components/Swap';
 import ChainConnection from 'components/ChainConnection';
 import { INTER_LOGO } from 'assets/assets';
+import AnnouncementBanner from 'components/AnnouncementBanner';
 
 import 'styles/globals.css';
 
@@ -20,6 +21,7 @@ const App = () => {
         autoClose={false}
       ></ToastContainer>
       <motion.div>
+        <AnnouncementBanner />
         <motion.div className="min-w-screen container p-4 mx-auto flex justify-between items-center">
           <a href="https://inter.trade/" target="inter.trade">
             <img
