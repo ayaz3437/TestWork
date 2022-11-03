@@ -34,7 +34,7 @@ const AnnouncementBanner = () => {
                   <GrAnnounce className="h-6 w-6" aria-hidden="true" />
                 </span>
                 <p className="ml-3 font-medium text-black">
-                  Thanks for your interest in PSM launch!{' '}
+                  Thanks for your interest in the PSM launch!{' '}
                   <a
                     className="rounded-sm underline focus:outline-none focus:ring-2 focus:ring-white"
                     href="https://community.agoric.com/t/ist-minting-limits-for-inter-protocol-mvp-launch/87"
@@ -42,7 +42,15 @@ const AnnouncementBanner = () => {
                   >
                     IST minting limits for Inter Protocol MVP launch
                   </a>{' '}
-                  have been increased for all supported assets.
+                  have been increased for all supported assets. Check out{' '}
+                  <a
+                    className="rounded-sm underline focus:outline-none focus:ring-2 focus:ring-white"
+                    href="https://analytics.inter.trade"
+                    target="inter-analytics"
+                  >
+                    analytics.inter.trade
+                  </a>{' '}
+                  to learn more.
                 </p>
               </motion.div>
               <motion.div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
