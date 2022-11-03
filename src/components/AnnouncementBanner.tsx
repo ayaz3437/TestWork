@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { bannerIndexDismissedAtom } from 'store/app';
 
 // UPDATE WHENEVER COMPONENT IS MODIFIED.
-export const currentBannerIndex = 0;
+export const currentBannerIndex = 1;
 
 const AnnouncementBanner = () => {
   const [bannerIndexDismissed, setBannerIndexDismissed] = useAtom(
@@ -34,7 +34,7 @@ const AnnouncementBanner = () => {
                   <GrAnnounce className="h-6 w-6" aria-hidden="true" />
                 </span>
                 <p className="ml-3 font-medium text-black">
-                  Thanks for your interest in the PSM launch!{' '}
+                  Thanks for your interest in PSM launch!{' '}
                   <a
                     className="rounded-sm underline focus:outline-none focus:ring-2 focus:ring-white"
                     href="https://community.agoric.com/t/ist-minting-limits-for-inter-protocol-mvp-launch/87"
@@ -42,7 +42,7 @@ const AnnouncementBanner = () => {
                   >
                     IST minting limits for Inter Protocol MVP launch
                   </a>{' '}
-                  are limited for the first 7 days.
+                  have been increased for all supported assets.
                 </p>
               </motion.div>
               <motion.div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
