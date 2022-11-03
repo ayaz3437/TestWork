@@ -1,12 +1,14 @@
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
-import type { Amount, Brand, DisplayInfo } from '@agoric/ertp';
-import type { PursesJSONState } from '@agoric/wallet-backend';
-import type { Ratio } from '@agoric/zoe/src/contractSupport';
-
 import { makeDisplayFunctions } from 'utils/displayFunctions';
 import { mapAtom } from 'utils/helpers';
 import { networkConfigs } from 'config';
+
+// Ambient
+import '@agoric/ertp/src/types';
+import '@agoric/zoe/src/contractSupport';
+import '@agoric/wallet-backend/src/types';
+import { PursesJSONState } from '@agoric/wallet-backend';
 
 export type BrandInfo = DisplayInfo<'nat'> & {
   petname: string;

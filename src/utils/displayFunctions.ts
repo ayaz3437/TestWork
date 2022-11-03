@@ -3,9 +3,12 @@ import {
   stringifyRatio,
   stringifyValue,
 } from '@agoric/ui-components';
-import { AssetKind, Brand } from '@agoric/ertp';
+import { AssetKind } from '@agoric/ertp';
 import { IST_ICON } from 'assets/assets';
 import type { BrandInfo } from 'store/app';
+
+// Ambient
+import '@agoric/ertp/src/types';
 
 const getLogoForBrandPetname = (brandPetname: string) => {
   switch (brandPetname) {

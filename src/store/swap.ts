@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { Amount, AmountMath } from '@agoric/ertp';
+import { AmountMath } from '@agoric/ertp';
 
 import {
   displayFunctionsAtom,
@@ -16,6 +16,9 @@ import {
   filterPursesByBrand,
 } from 'utils/helpers';
 import type { Metrics, GovernedParams } from 'store/app';
+
+// Ambient
+import '@agoric/ertp/src/types';
 
 export enum SwapError {
   EMPTY_AMOUNTS = 'Please enter the amounts first.',

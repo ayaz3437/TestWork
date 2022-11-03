@@ -3,6 +3,8 @@ import { iterateLatest, makeFollower, Leader } from '@agoric/casting';
 import { dappConfig } from 'config';
 import type { Metrics, GovernedParams, BrandInfo } from 'store/app';
 import type { Marshal } from '@endo/marshal';
+
+import '@agoric/wallet-backend/src/types';
 import { PursesJSONState } from '@agoric/wallet-backend';
 
 const watchGovernance = async (

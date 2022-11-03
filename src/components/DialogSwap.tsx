@@ -3,8 +3,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiX, FiExternalLink } from 'react-icons/fi';
 
-import { Brand } from '@agoric/ertp';
 import AssetDialog from 'components/AssetDialog';
+
+// Ambient
+import '@agoric/ertp/src/types';
 
 const DialogSwap = ({
   open,
