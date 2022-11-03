@@ -1,0 +1,23 @@
+name: Test
+
+# run on all PRs (even the ones that target other branches)
+
+on:
+  pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile # optional, --immutable
+      - run: yarn prettier --check .
+      - run: yarn lint
+      - run: yarn test
