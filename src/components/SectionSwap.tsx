@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiChevronDown } from 'react-icons/fi';
 import { useAtomValue, useAtom } from 'jotai';
-import { AmountMath, Brand } from '@agoric/ertp';
 import clsx from 'clsx';
 
 import CustomInput from 'components/CustomInput';
@@ -21,6 +20,10 @@ import {
   anchorBrandsAtom,
   selectedAnchorPetnameAtom,
 } from 'store/swap';
+
+// Ambient
+import '@agoric/ertp/src/types';
+import { AmountMath } from '@agoric/ertp';
 
 export enum SectionSwapType {
   FROM = 'FROM',

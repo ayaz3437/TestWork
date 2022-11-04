@@ -22,17 +22,6 @@ declare module '@agoric/casting' {
   export const makeLeader;
 }
 
-// This holds constants; types are in ertp.d.ts
-declare module '@agoric/ertp' {
-  export const AmountMath;
-  export const AssetKind = {
-    NAT: 'nat',
-    SET: 'set',
-    COPY_SET: 'copySet',
-    COPY_BAG: 'copyBag',
-  };
-}
-
 declare module '@agoric/wallet-backend' {
   export type PursesJSONState = {
     brand: import('@agoric/ertp').Brand;
@@ -58,17 +47,4 @@ declare module '@agoric/ui-components' {
   export const stringifyValue;
   export const stringifyRatioAsPercent;
   export const stringifyRatio;
-}
-
-declare module '@agoric/zoe/src/contractSupport' {
-  export type Ratio = {
-    numerator: Amount;
-    denominator: Amount;
-  };
-  export const makeRatioFromAmounts;
-  export const floorMultiplyBy;
-  export const oneMinus;
-  export const floorDivideBy;
-  export const ceilDivideBy;
-  export const ceilMultiplyBy;
 }
