@@ -1,15 +1,17 @@
 import { displayPetname } from 'utils/displayFunctions';
 import { PursesJSONState } from '@agoric/wallet-backend';
-import { Amount, Brand } from '@agoric/ertp';
 import { atom } from 'jotai';
 import {
-  Ratio,
   makeRatioFromAmounts,
   floorMultiplyBy,
   oneMinus,
   ceilDivideBy,
   ceilMultiplyBy,
 } from '@agoric/zoe/src/contractSupport';
+
+// Ambient
+import '@agoric/ertp/src/types';
+import '@agoric/zoe/src/contractSupport/types';
 
 export const getPurseAssetKind = (purse: PursesJSONState) =>
   (purse && purse.displayInfo && purse.displayInfo.assetKind) || undefined;
