@@ -242,7 +242,7 @@ const Swap = () => {
         boxShadow: '0px 0px 99px var(--color-glow)',
       }}
       transition={{ duration: 0.4 }}
-      className="flex flex-col p-4 rounded-sm gap-4 w-screen max-w-lg relative select-none overflow-hidden"
+      className="h-fit flex flex-col p-4 rounded-sm gap-4 w-screen max-w-lg relative select-none overflow-hidden"
     >
       <motion.div className="flex justify-between items-center gap-8 " layout>
         <h1 className="text-2xl font-semibold text-slate-800">IST Swap</h1>
