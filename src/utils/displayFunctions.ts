@@ -22,6 +22,10 @@ const getLogoForBrandPetname = (brandPetname: string) => {
       return 'USDT_axl.png';
     case 'USDT_grv':
       return 'USDT_grv.webp';
+    case 'DAI_axl':
+      return 'DAI_axl.png';
+    case 'DAI_grv':
+      return 'DAI_grv.png';
     default:
       return 'default.png';
   }
