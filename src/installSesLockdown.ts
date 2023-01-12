@@ -1,5 +1,4 @@
-/* global lockdown */
-import 'ses'; // adds lockdown, harden, and Compartment
+import { lockdown } from '@endo/lockdown';
 import '@endo/eventual-send/shim.js'; // adds support needed by E
 
 const consoleTaming = import.meta.env.DEV ? 'unsafe' : 'safe';
