@@ -48,3 +48,7 @@ declare module '@agoric/ui-components' {
   export const stringifyRatioAsPercent;
   export const stringifyRatio;
 }
+
+declare module '@endo/lockdown' {
+  export const lockdown;
+}
