@@ -7,7 +7,6 @@ import { mapAtom } from 'utils/helpers';
 
 // Ambient
 import '@agoric/ertp/src/types';
-import '@agoric/wallet-backend/src/types';
 import '@agoric/zoe/src/contractSupport';
 
 export type BrandInfo = DisplayInfo<'nat'> & {

@@ -20,7 +20,7 @@
     "@agoric/casting": "^0.3.3-dev-f5341af.0",
     "@agoric/ertp": "^0.15.4-dev-f5341af.0",
     "@agoric/ui-components": "^0.3.4-dev-f5341af.0",
-    "@agoric/web-components": "^0.5.1-dev-f5341af.0",
+    "@agoric/web-components": "^0.5.1-dev-bdb08a7.0",
     "@agoric/zoe": "^0.25.4-dev-f5341af.0",
     "@endo/eventual-send": "^0.16.0",
     "@endo/init": "^0.5.53",
