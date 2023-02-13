@@ -4,7 +4,6 @@ import { dappConfig } from 'config';
 import type { Metrics, GovernedParams, BrandInfo } from 'store/app';
 import type { Marshal } from '@endo/marshal';
 
-import '@agoric/wallet-backend/src/types';
 import { PursesJSONState } from '@agoric/wallet-backend';
 
 const watchGovernance = async (
@@ -122,17 +121,19 @@ export const watchPurses = async (
   for await (const purses of iterateNotifier(n)) {
     setPurses(purses);
 
-    for (const purse of purses as PursesJSONState[]) {
-      const { brand, displayInfo, brandPetname: petname } = purse;
-      const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
-      const assetKind = displayInfo && displayInfo.assetKind;
-      const newInfo: BrandInfo = {
-        petname,
-        assetKind,
-        decimalPlaces,
-      };
+    if (purses?.length) {
+      for (const purse of purses as PursesJSONState[]) {
+        const { brand, displayInfo, brandPetname: petname } = purse;
+        const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
+        const assetKind = displayInfo && displayInfo.assetKind;
+        const newInfo: BrandInfo = {
+          petname,
+          assetKind,
+          decimalPlaces,
+        };
 
-      mergeBrandToInfo([[brand, newInfo]]);
+        mergeBrandToInfo([[brand, newInfo]]);
+      }
     }
   }
 };
