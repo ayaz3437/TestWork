@@ -119,21 +119,24 @@ export const watchPurses = async (
 ) => {
   const n = chainConnection.pursesNotifier;
   for await (const purses of iterateNotifier(n)) {
+    if (!purses?.length) {
+      console.warn('no purses from notifier');
+      continue;
+    }
+
     setPurses(purses);
 
-    if (purses?.length) {
-      for (const purse of purses as PursesJSONState[]) {
-        const { brand, displayInfo, brandPetname: petname } = purse;
-        const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
-        const assetKind = displayInfo && displayInfo.assetKind;
-        const newInfo: BrandInfo = {
-          petname,
-          assetKind,
-          decimalPlaces,
-        };
+    for (const purse of purses as PursesJSONState[]) {
+      const { brand, displayInfo, brandPetname: petname } = purse;
+      const decimalPlaces = displayInfo && displayInfo.decimalPlaces;
+      const assetKind = displayInfo && displayInfo.assetKind;
+      const newInfo: BrandInfo = {
+        petname,
+        assetKind,
+        decimalPlaces,
+      };
 
-        mergeBrandToInfo([[brand, newInfo]]);
-      }
+      mergeBrandToInfo([[brand, newInfo]]);
     }
   }
 };
