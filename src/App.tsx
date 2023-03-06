@@ -10,7 +10,6 @@ import { MdBarChart } from 'react-icons/md';
 import { FiExternalLink } from 'react-icons/fi';
 
 import 'styles/globals.css';
-import AnnouncementBanner from 'components/AnnouncementBanner';
 
 const App = () => {
   return (
@@ -23,7 +22,6 @@ const App = () => {
         autoClose={false}
       ></ToastContainer>
       <motion.div className="flex flex-col min-h-screen">
-        <AnnouncementBanner />
         <motion.div className="min-w-screen container p-4 mx-auto flex justify-between items-center">
           <a href="https://inter.trade/" target="inter.trade">
             <img
