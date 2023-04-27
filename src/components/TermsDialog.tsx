@@ -5,7 +5,7 @@ import { termsIndexAgreedUponAtom } from 'store/app';
 import { useSetAtom } from 'jotai';
 
 // Increment every time the current terms change.
-export const currentTermsIndex = 0;
+export const currentTermsIndex = 1;
 
 const TermsDialog = ({
   isOpen,
