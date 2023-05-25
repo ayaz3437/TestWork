@@ -26,6 +26,8 @@ import TermsDialog, { currentTermsIndex } from './TermsDialog';
 import 'styles/globals.css';
 import clsx from 'clsx';
 
+const autoCloseDelayMs = 7000;
+
 const ChainConnection = () => {
   const [connectionInProgress, setConnectionInProgress] = useState(false);
   const [chainConnection, setChainConnection] = useAtom(chainConnectionAtom);
@@ -85,7 +87,7 @@ const ChainConnection = () => {
         case Errors.enableKeplr:
           toast.error('Enable the connection in Keplr to continue.', {
             hideProgressBar: false,
-            autoClose: 5000,
+            autoClose: autoCloseDelayMs,
           });
           break;
         case Errors.networkConfig:
@@ -102,9 +104,13 @@ const ChainConnection = () => {
                 rel="noreferrer"
               >
                 wallet.agoric.app/wallet/
-              </a>
-              .{' '}
-            </p>
+              </a>{' '}
+              then try again.
+            </p>,
+            {
+              hideProgressBar: false,
+              autoClose: autoCloseDelayMs,
+            }
           );
           break;
       }
