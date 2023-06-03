@@ -6,7 +6,7 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      setupFiles: ['test/loadKeplr.ts', 'src/installSesLockdown.ts'],
+      setupFiles: ['src/installSesLockdown.ts'],
     },
   })
 );
