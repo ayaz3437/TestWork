@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { bannerIndexDismissedAtom } from 'store/app';
 
 // UPDATE WHENEVER COMPONENT IS MODIFIED.
-export const currentBannerIndex = 2;
+export const currentBannerIndex = 3;
 
 const AnnouncementBanner = () => {
   const [bannerIndexDismissed, setBannerIndexDismissed] = useAtom(
@@ -34,9 +34,9 @@ const AnnouncementBanner = () => {
                   <GrAnnounce className="h-6 w-6" aria-hidden="true" />
                 </span>
                 <p className="ml-3 font-medium text-black">
-                  Note: An upgrade is planned to take place on Monday 6th March
-                  around 15:45 UTC - PSM transactions may be delayed during this
-                  time.
+                  Note: A chain upgrade is planned to take place on Monday June
+                  19th 2023 at approximately 17:00 UTC. The PSM will not be
+                  functional during this time.
                 </p>
               </motion.div>
               <motion.div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
