@@ -8,6 +8,7 @@ import ChainConnection from 'components/ChainConnection';
 import { INTER_LOGO } from 'assets/assets';
 import { MdBarChart } from 'react-icons/md';
 import { FiExternalLink } from 'react-icons/fi';
+import AnnouncementBanner from 'components/AnnouncementBanner';
 
 import 'styles/globals.css';
 
@@ -22,6 +23,7 @@ const App = () => {
         autoClose={false}
       ></ToastContainer>
       <motion.div className="flex flex-col min-h-screen">
+        <AnnouncementBanner />
         <motion.div className="min-w-screen container p-4 mx-auto flex justify-between items-center">
           <a href="https://inter.trade/" target="inter.trade">
             <img
