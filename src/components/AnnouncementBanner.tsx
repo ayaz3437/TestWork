@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { bannerIndexDismissedAtom } from 'store/app';
 
 // UPDATE WHENEVER COMPONENT IS MODIFIED.
-export const currentBannerIndex = 1;
+export const currentBannerIndex = 2;
 
 const AnnouncementBanner = () => {
   const [bannerIndexDismissed, setBannerIndexDismissed] = useAtom(
