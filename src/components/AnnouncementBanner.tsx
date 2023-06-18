@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { bannerIndexDismissedAtom } from 'store/app';
 
 // UPDATE WHENEVER COMPONENT IS MODIFIED.
-export const currentBannerIndex = 2;
+export const currentBannerIndex = 3;
 
 const AnnouncementBanner = () => {
   const [bannerIndexDismissed, setBannerIndexDismissed] = useAtom(
@@ -34,23 +34,9 @@ const AnnouncementBanner = () => {
                   <GrAnnounce className="h-6 w-6" aria-hidden="true" />
                 </span>
                 <p className="ml-3 font-medium text-black">
-                  Thanks for your interest in the PSM launch!{' '}
-                  <a
-                    className="rounded-sm underline focus:outline-none focus:ring-2 focus:ring-white"
-                    href="https://community.agoric.com/t/ist-minting-limits-for-inter-protocol-mvp-launch/87"
-                    target="mvp-mint-limits"
-                  >
-                    IST minting limits for Inter Protocol MVP launch
-                  </a>{' '}
-                  have been increased for all supported assets. Check out{' '}
-                  <a
-                    className="rounded-sm underline focus:outline-none focus:ring-2 focus:ring-white"
-                    href="https://analytics.inter.trade"
-                    target="inter-analytics"
-                  >
-                    analytics.inter.trade
-                  </a>{' '}
-                  to learn more.
+                  Note: A chain upgrade is planned to take place on Monday June
+                  19th 2023 at approximately 17:00 UTC. The PSM will not be
+                  functional during this time.
                 </p>
               </motion.div>
               <motion.div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
